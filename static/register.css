@@ -1,0 +1,116 @@
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center; 
+    height: 100vh; 
+    margin: 0;
+    padding: 0;
+    background-image: url(coolbg.png);
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+    animation: fadeInAnimation ease 2s;
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
+    cursor: url('pointer.png') 35 35, auto;
+
+}
+
+@keyframes fadeInAnimation {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+     }
+}
+    
+
+
+h1{
+    color: rgb(127, 43, 121);
+    margin-bottom: 20px;
+    font-style:normal;
+    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-variant:small-caps ;
+    text-shadow: 0px 0px 3px #76a9eb,0 0 5px #b573cd ; 
+    
+    }
+
+form {
+    margin:20px auto;
+    padding: 20px;
+    background-color: #fffefeda ;
+    box-shadow: 0 0 10px rgb(154, 150, 150); 
+    text-align: center;
+    backdrop-filter: blur;
+    border-radius: 10px; 
+    margin: 20px auto;
+    
+}
+
+
+input[type="submit"] {
+    width: 50%;
+    margin: 10px auto;
+    padding: 10px;
+    background-image: linear-gradient( to left, rgb(150, 100, 170), rgb(17, 135, 232));
+    color: rgb(255, 255, 255);
+    font-size: 15px;
+    border:none;
+    border-radius: 3px;
+    cursor: pointer;
+    text-shadow: 1px 1px 1px #898c90e2;
+    box-shadow: 0 0 10px rgb(154, 150, 150);
+}
+    
+input[type="submit"]:hover{
+    color: aqua;
+  
+
+}
+
+
+
+.inputbox {
+    position: relative;
+    margin-bottom: 20px;
+    
+    
+}
+
+
+.inputbox ion-icon {
+    position: absolute;
+    top: 30%;
+    left: 10px;
+    transform: translateY(-50%);
+    color: #777; /* Icon color */
+    font-size: 18px; /* Icon size */
+}
+
+.inputbox label{
+    display:none;
+}
+
+.inputbox input {
+    width: 75%;
+    padding: 10px 30px 10px 35px; 
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    font-size: 14px;
+    background-color: #f2f2f2da; 
+    color: #000000; 
+    box-shadow: 0 0 10px rgb(98, 206, 243)
+}
+
+/* Move the text up when hovering */
+.inputbox input:hover {
+    padding-top: 15px; 
+    transition: padding-top 0.3s;
+}
+
+a {
+    display:none;
+}
