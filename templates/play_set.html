@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>Play Trivia Set</title>
+</head>
+<body>
+   <h1>Trivia Set: {{ trivia_set.set_title }}</h1>
+   <h3>Correct Answers: <span id="correct_answers">0</span></h3>
+   <ul>
+       {% for question in questions %}
+       <li>
+           <h2>Question {{ loop.index }}</h2>
+           <p>{{ question.question_text }}</p>
+
+           {% if question.question_type == 'multiple_choice' %}
+           <form onsubmit="return checkMultipleChoiceAnswer('{{ question.id }}')">
+               <ul>
+                   {% for option in question.options %}
+                   <li>
+                       <input type="radio" name="selected_option" value="{{ option.id }}">
+                       {{ option.text }}
+                   </li>
+                   {% endfor %}
+               </ul>
+               <input type="submit" value="Submit Answer">
+           </form>
+           {% elif question.question_type == 'open_ended' %}
+           <form onsubmit="return checkOpenEndedAnswer('{{ question.id }}')">
+               <input type="text" id="open_ended_answer_{{ question.id }}" placeholder="Your answer">
+               <input type="submit" value="Submit Answer">
+           </form>
+           {% endif %}
+       </li>
+       {% endfor %}
+   </ul>
+   <script>
+       // JavaScript to update the correctness counter
+       var correctnessCounter = 0;
+       var correctAnswersElement = document.getElementById('correct_answers');
+
+       // Function to check the correctness of a multiple-choice answer
+       function checkMultipleChoiceAnswer(questionId) {
+           // You should implement the logic to check correctness based on your app's rules
+           // For simplicity, let's assume correctness checking logic here
+           var selectedOption = document.querySelector('input[name="selected_option"]:checked');
+           var isCorrect = checkAnswerValidity(selectedOption.value, questionId);
+
+           if (isCorrect) {
+               correctnessCounter++;
+               correctAnswersElement.textContent = correctnessCounter;
+           }
+
+           // Prevent the form from submitting
+           return false;
+       }
+
+       // Function to check the correctness of an open-ended answer
+       function checkOpenEndedAnswer(questionId) {
+           var userAnswer = document.getElementById('open_ended_answer_' + questionId).value;
+           // You should implement the logic to check correctness based on your app's rules
+           // For simplicity, let's assume correctness checking logic here
+           var isCorrect = checkAnswerValidity(userAnswer, questionId);
+
+           if (isCorrect) {
+               correctnessCounter++;
+               correctAnswersElement.textContent = correctnessCounter;
+           }
+
+           // Prevent the form from submitting
+           return false;
+       }
+
+       // Example correctness checking logic (customize as needed)
+       function checkAnswerValidity(userAnswer, questionId) {
+           // Retrieve the correct answers from the dictionary based on the question ID
+           var correctAnswers = question_answer_dict[questionId];
+
+           // Check if the user's answer matches any of the correct answers (case-insensitive)
+           return correctAnswers.some(function(correctAnswer) {
+               return userAnswer.toLowerCase() === correctAnswer.toLowerCase();
+           });
+       }
+   </script>
+</body>
+</html>
