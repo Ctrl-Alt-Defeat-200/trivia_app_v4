@@ -1,133 +1,109 @@
 <!-- create_trivia_set.html -->
 <!DOCTYPE html>
 <html>
-<head>
+  <head>
     <title>Create Trivia Set</title>
-</head>
-<body>
+  </head>
+  <body>
     <h1>Create a New Trivia Set</h1>
     <form method="POST" action="{{ url_for('create_trivia_set') }}">
-        <label for="set_title">Set Title:</label>
-        <input type="text" name="set_title" required><br><br>
+      <label for="set_title">Set Title:</label>
+      <input type="text" id="set_title" name="set_title" required /><br /><br />
 
-        <label for="category">Category:</label>
-        <input type="text" name="category" required><br><br>
+      <label for="category">Category:</label>
+      <input type="text" id="category" name="category" required /><br /><br />
 
-        <label for="difficulty">Difficulty:</label>
-        <select name="difficulty" required>
-            <option value="easy">Easy</option>
-            <option value="medium">Medium</option>
-            <option value="hard">Hard</option>
-        </select><br><br>
+      <label for="difficulty">Difficulty:</label>
+      <select id="difficulty" name="difficulty" required>
+        <option value="easy">Easy</option>
+        <option value="medium">Medium</option>
+        <option value="hard">Hard</option></select><br /><br />
 
-        <!-- Questions and Options -->
-        <div id="questions-container">
-            <div class="question">
-                <label for="questions_0_text">Question:</label>
-                <input type="text" name="questions_0_text" required>
-                
-                <label for="questions_0_type">Question Type:</label>
-                <select name="questions_0_type" class="question-type">
-                    <option value="none" selected disabled hidden>Select an Option</option>
-                    <option value="multiple_choice" >Multiple Choice</option>
-                    <option value="open_ended">Open Ended</option>
-                </select>
-                
-                
-                <button type="button" class="add-option" data-question-index="0">Add Option</button>
-                <button type="button" class="delete-question">Delete Question</button>
-                
-                <div class="options-container" id="options-container-0" style="display: none;">
-                    <div class="option" >
-                        <label for="options_0_0_text">Option:</label>
-                        <input type="text" name="options_0_0_text[]" required>
-                        
-                        <label for="options_0_0_is_correct">Is Correct:</label>
-                        <input type="checkbox" name="options_0_0_is_correct[]">
-                    </div>
-                </div>
-                
-                <div class="open-ended-answer" id="open-ended-answer-0" style="display: none;">
-                    <label for="open_ended_0_text">Correct Answer:</label>
-                    <input type="text" name="open_ended_0_text">
-                </div>
-            </div>
-        </div>
-        
-        <button type="button" id="add-question">Add Question</button>
-        
-        <input type="submit" value="Create Trivia Set">
+      <!-- Questions and Options -->
+      <div id="questions-container">
+        <!--This is where dynamically added q's will show-->
+      </div>
+      <button type="button" id="add-question">Add Question</button>
+
+      <input type="submit" value="Create Trivia Set" />
     </form>
-    <br>
-    <a href="{{url_for('dashboard')}}">Back to Dashboard</a><br><br>
+
+    <br />
+    <a href="{{url_for('dashboard')}}">Back to Dashboard</a><br /><br />
 
     <!-- JavaScript code for adding questions and options dynamically -->
+
     <script>
+        const addQuestionButton = document.getElementById("add-question");
+        const questionsContainer = document.getElementById("questions-container");
+
         let questionIndex = 0;
-    
-        document.getElementById('add-question').addEventListener('click', () => {
-            const questionsContainer = document.getElementById('questions-container');
-            const newQuestion = document.querySelector('.question').cloneNode(true);
-            questionIndex = document.querySelectorAll('.question').length;
-    
-            // Update the name attributes for question text and type inputs
-            newQuestion.querySelector('[name="questions_0_text"]').name = `questions_${questionIndex}_text`;
-            newQuestion.querySelector('[name="questions_0_type"]').name = `questions_${questionIndex}_type`;
-    
-            // Update dataset attributes for buttons
-            newQuestion.querySelector('.add-option').dataset.questionIndex = questionIndex;
-            newQuestion.querySelector('.delete-question').dataset.questionIndex = questionIndex;
-    
-            // Update IDs for options and open-ended answer containers
-            newQuestion.querySelector('.options-container').id = `options-container-${questionIndex}`;
-            newQuestion.querySelector('.open-ended-answer').id = `open-ended-answer-${questionIndex}`;
-    
-            questionsContainer.appendChild(newQuestion);
-        });
-    
-        document.getElementById('questions-container').addEventListener('change', (event) => {
-            if (event.target.name.startsWith('questions_') && event.target.name.endsWith('_type')) {
-                const questionIndex = event.target.name.split('_')[1];
-                const selectedType = event.target.value;
-                const openEndedAnswerDiv = document.getElementById(`open-ended-answer-${questionIndex}`);
-    
-                if (selectedType === 'open_ended') {
-                    openEndedAnswerDiv.style.display = 'block';
-                    document.getElementById(`options-container-${questionIndex}`).style.display = 'none';
+
+        addQuestionButton.addEventListener("click", () => {
+            const questionDiv = document.createElement("div");
+            questionDiv.innerHTML = `
+                <hr />
+                <label for="question_${questionIndex}">Question:</label>
+                <input type="text" id="question_${questionIndex}" name="question_${questionIndex}" required /><br /><br />
+                
+                <label for="question_type_${questionIndex}">Question Type:</label>
+                <select id="question_type_${questionIndex}" name="question_type_${questionIndex}" required>
+                    <option value="multiple_choice">Multiple Choice</option>
+                    <option value="open_ended">Open Ended</option>
+                </select><br /><br />
+                
+                <div id="options-container_${questionIndex}">
+                    <!-- This is where dynamically added options will appear -->
+                </div>
+                <div id="correct-answer-container_${questionIndex}">
+                    <!-- This is where the correct answer for open-ended questions will appear -->
+                </div>
+                <button type="button" id="add-option_${questionIndex}">Add Option</button>
+            `;
+
+            questionsContainer.appendChild(questionDiv);
+
+            // Add an event listener for the "Add Option" button for this question
+            const addOptionButton = document.getElementById(`add-option_${questionIndex}`);
+            const optionsContainer = document.getElementById(`options-container_${questionIndex}`);
+            const correctAnswerContainer = document.getElementById(`correct-answer-container_${questionIndex}`);
+            let optionIndex = 0;
+
+            addOptionButton.addEventListener("click", () => {
+                const optionDiv = document.createElement("div");
+                optionDiv.innerHTML = `
+                    <label for="option_${questionIndex}_${optionIndex}">Option:</label>
+                    <input type="text" id="option_${questionIndex}_${optionIndex}" name="option_${questionIndex}_${optionIndex}" required /><br /><br />
+
+                    <label for="is_correct_${questionIndex}_${optionIndex}">Is Correct:</label>
+                    <input type="checkbox" id="is_correct_${questionIndex}_${optionIndex}" name="is_correct_${questionIndex}_${optionIndex}" /><br /><br />
+                `;
+
+                optionsContainer.appendChild(optionDiv);
+                optionIndex++;
+            });
+
+            // Add an event listener for the question type dropdown
+            const questionTypeDropdown = document.getElementById(`question_type_${questionIndex}`);
+            questionTypeDropdown.addEventListener("change", () => {
+                if (questionTypeDropdown.value === "open_ended") {
+                    const correctAnswerInput = document.createElement("input");
+                    correctAnswerInput.type = "text";
+                    correctAnswerInput.id = `correct_answer_${questionIndex}`;
+                    correctAnswerInput.name = `correct_answer_${questionIndex}`;
+                    correctAnswerInput.placeholder = "Correct Answer";
+                    correctAnswerContainer.appendChild(correctAnswerInput);
                 } else {
-                    openEndedAnswerDiv.style.display = 'none';
-                    document.getElementById(`options-container-${questionIndex}`).style.display = 'block';
-                    
+                    // Remove the correct answer input field if question type is not open-ended
+                    correctAnswerContainer.innerHTML = "";
                 }
-            }
-        });
-    
-        document.getElementById('questions-container').addEventListener('click', (event) => {
-            if (event.target.classList.contains('add-option')) {
-                const questionIndex = event.target.dataset.questionIndex;
-                const optionsContainer = document.getElementById(`options-container-${questionIndex}`);
-                const newOption = optionsContainer.querySelector('.option').cloneNode(true);
-    
-                // Generate a unique name for the option text input
-                const optionIndex = optionsContainer.querySelectorAll('.option').length;
-                newOption.querySelector('[name^="options_0_0_text"]').name = `options_${questionIndex}_${optionIndex}_text`;
-    
-                // Generate a unique name for the option checkbox input
-                newOption.querySelector('[name^="options_0_0_is_correct"]').name = `options_${questionIndex}_${optionIndex}_is_correct`;
-    
-                optionsContainer.appendChild(newOption);
-            }
-    
-            // Check if the clicked element is a "delete-question" button
-            if (event.target.classList.contains('delete-question')) {
-                const questionContainer = event.target.closest('.question');
-                if (questionContainer) {
-                    questionContainer.remove();
-                }
-            }
+            });
+
+            questionIndex++;
         });
     </script>
-    
+   
 
-</body>
+
+  </body>
 </html>

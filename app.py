@@ -3,15 +3,12 @@ from flask import Flask, render_template, request, url_for, redirect, session, f
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, UserMixin, login_user, logout_user, current_user, login_required
 import uuid
-from flask_migrate import Migrate
 
 
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///db.sqlite"
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config["SECRET_KEY"] = "abc"
-db = SQLAlchemy()   ##app not originally passed in
-migrate = Migrate(app, db)
+db = SQLAlchemy()
 
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -238,6 +235,7 @@ def create_trivia_set():
                         new_option = Option(
                             text=open_ended_answer,
                             is_correct=True,
+                            question_id=new_question.id # type:ignore
                         )
                         new_question.options.append(new_option)
                         db.session.add(new_option)
@@ -258,6 +256,7 @@ def edit_trivia_set(trivia_set_id):
     if trivia_set:
         # Check if the current user is the creator of the trivia set
         if current_user.id == trivia_set.user_id: # type:ignore
+            
             if request.method == 'POST':
                 # Handle the form submission for editing the trivia set
                 # Update the trivia set's properties as needed
@@ -318,6 +317,9 @@ def delete_trivia_set(trivia_set_id):
     if trivia_set:
         # Check if the current user is the creator of the trivia set
         if current_user.id == trivia_set.user_id: # type:ignore
+            # Delete associated questions first
+            for question in trivia_set.questions:
+                db.session.delete(question)
             # Delete the trivia set and commit to db
             db.session.delete(trivia_set)
             db.session.commit()
@@ -344,4 +346,4 @@ def logout():
 if __name__ == "__main__":
     with app.app_context():
         db.create_all()
-    app.run(debug=True, host='0.0.0.0')
+    app.run(debug=True)
