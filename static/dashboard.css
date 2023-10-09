@@ -1,0 +1,105 @@
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center; 
+    height: 100vh; 
+    margin: 0;
+    padding: 0;
+    background-image: url(purpleplanet.png);
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+    cursor: url('pointer.png') 16 16, auto;
+}
+
+
+
+
+h1{
+    color: rgb(247, 231, 246);
+    margin-bottom: 20px;
+    font-style:normal;
+    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-variant:small-caps ;
+    text-shadow: 0px 0px 3px #76e3eb,0 0 5px #f2f2f2; 
+    animation: fadeIn 1s ease-in ;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0; /* Start with 0 opacity (completely transparent) */
+        }
+    to {
+        opacity: 1; /* End with 1 opacity (fully visible) */
+        }
+    }
+
+h2{
+    color: rgb(127, 43, 121);
+    margin-bottom: 40px;
+    font-style:normal;
+    font-size: 30px;
+    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-variant:small-caps ;
+    text-shadow: 0px 0px 3px #76a9eb,0 0 5px #b573cd ;
+}
+
+
+form{
+    margin:20px auto;
+    padding: 20px;
+    background-color: #fffefeea ;
+    box-shadow: 0 0 10px rgb(154, 150, 150); 
+    text-align: center;
+    backdrop-filter: blur;
+    border-radius: 10px; 
+    margin: 20px auto;
+    animation: fadeInAnimation ease-in 2s;
+    animation-fill-mode:forwards;
+}
+@keyframes fadeInAnimation {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+     }
+}
+
+
+.trivia-list {
+    list-style-type:square;
+    padding: 0;
+    
+}
+
+ul{
+    font-size: 18px ;
+    font-family: 'Autour One', cursive;
+    text-shadow: 0px 0px 3px #76a9eb,0 0 5px #b573cd ;
+
+
+}
+
+
+.custom-link {
+    text-decoration: none; 
+    color: #fbfbfb; 
+    font-weight: bold;
+    font-family: Arial, Helvetica, sans-serif; 
+    padding: 10px 20px; 
+    border: 2px solid #5900ff; 
+    border-radius: 5px; 
+    margin: 5px; 
+    display: inline-block;  
+    background-image: linear-gradient( to right, rgb(150, 100, 170), rgb(17, 135, 232));
+    box-shadow: 0 0 10px rgba(229, 146, 240, 0.947);
+}
+
+/* Define styles for link hover effect */
+.custom-link:hover {
+    color: #ffea00; /* Change text color on hover to create contrast */
+    
+   
+}

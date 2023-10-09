@@ -1,35 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='register.css') }}">
 	<meta charset="UTF-8" />
 	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<title>Register</title>
-	<style>
-	h1 {
-		color: green;
-	}
-	</style>
+
 </head>
 <body>
 	<nav>
 	<ul>
-		<li><a href="{{url_for('login')}}">Login</a></li>
-		<li><a href="{{url_for('register')}}">Create account</a></li>
+		<a href="{{url_for('login')}}">Login</a>
+		<a href="{{url_for('register')}}">Create account</a>
 	</ul>
 	</nav>
-	<h1>Create an account</h1>
+	
 	<form method="POST" action="/register">
+		<h1>Create an account</h1>
+		
+		<div class ="inputbox">
+		<ion-icon name="mail-outline"></ion-icon>
 		<label for="email">Email:</label>
-		<input type="email" name="email" required><br><br>
+		<input type="email" placeholder="Email" name="email" required><br><br>
+		</div>
 	
+		<div class ="inputbox">
+		<ion-icon name="person-outline"></ion-icon>
 		<label for="username">Username:</label>
-		<input type="text" name="username" required><br><br>
+		<input type="text" placeholder="Username" name="username" required><br><br>
+		</div>
 	
+		<div class ="inputbox">
+		<ion-icon name="lock-closed-outline"></ion-icon>
 		<label for="password">Password:</label>
-		<input type="password" name="password" required><br><br>
+		<input type="password" placeholder="Password" name="password" required><br><br>
+		</div>
 	
 		<input type="submit" value="Register"><br><br>
 	</form>
+	<script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+	<script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 </body>
 </html>

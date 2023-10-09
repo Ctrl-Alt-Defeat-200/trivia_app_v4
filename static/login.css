@@ -1,0 +1,127 @@
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center; 
+    height: 100vh; 
+    margin: 0;
+    padding: 0;
+    background-image: url(coolbg.png);
+    background-repeat: no-repeat;
+    background-attachment:fixed;
+    background-size: cover;
+    animation: fadeInAnimation ease 2s;
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
+    cursor: url('pointer.png') 16 16, auto;
+
+}
+
+@keyframes fadeInAnimation {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+     }
+}
+
+h1{
+    color: rgb(127, 43, 121);
+    margin-bottom: 40px;
+    font-style:normal;
+    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-variant:small-caps ;
+    text-shadow: 0px 0px 3px #76a9eb,0 0 5px #b573cd ;
+    
+    }
+
+form {
+    max-width: 500px;
+    margin:0 auto;
+    padding: 20px;
+    background-color: #fffefeda ;
+    box-shadow: 0 0 10px rgb(150, 152, 154); 
+    text-align: center;
+    border-radius: 10px; 
+    margin: 20px auto;
+    
+}
+
+input[type="submit"] {
+    width: 50%;
+    padding: 10px;
+    background-image: linear-gradient( to right, rgb(150, 100, 170), rgb(17, 135, 232));
+    color: rgb(255, 255, 255);
+    font-size: 15px;
+    border:none;
+    border-radius: 3px;
+    cursor: pointer;
+    text-shadow: 1px 1px 1px #898c90e2;
+    box-shadow: 0 0 10px rgb(154, 150, 150);
+}
+
+input[type="submit"]:hover{
+    color: aqua;
+}
+
+
+.inputbox {
+    position: relative;
+    margin-bottom: 10px;
+}
+
+
+.inputbox ion-icon {
+    position: absolute;
+    top: 40%;
+    left: 10px;
+    transform: translateY(-50%);
+    color: #777; /* Icon color */
+    font-size: 18px; /* Icon size */
+    
+    
+}
+
+.inputbox label{
+    display:none;
+}
+
+.inputbox input {
+    width: 75%;
+    padding: 10px 30px 10px 35px; 
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    font-size: 14px;
+    background-color: #f2f2f2; 
+    color: #333; 
+    box-shadow: 0 0 10px rgba(229, 146, 240, 0.947);
+    
+}
+
+/* Move the text up when hovering */
+.inputbox input:hover {
+    padding-top: 15px; 
+    transition: padding-top 0.3s;
+}
+
+
+.new-user {
+    display: inline;
+    margin-right: 10px; 
+    font-family:sans-serif;
+    font-size: 15px;
+    font-style: oblique;
+}
+
+.new-user a {
+    display: inline;
+    text-decoration: none; 
+    color: #007bff; 
+}
+
+
+a {
+    display:none;
+}
+
