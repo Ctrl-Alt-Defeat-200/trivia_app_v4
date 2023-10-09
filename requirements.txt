@@ -1,5 +1,5 @@
-pip install Flask
+Flask
 
-pip install Flask-SQLAlchemy
+Flask-SQLAlchemy
 
-pip install Flask-Login
+Flask-Login
