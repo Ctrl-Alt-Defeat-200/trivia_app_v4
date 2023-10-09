@@ -350,6 +350,21 @@ def play_set(set_id):
 
     return render_template('play_set.html', trivia_set=trivia_set, questions=questions, question_answer_dict=question_answer_dict)
 
+@app.route('/search', methods=['GET', 'POST'])
+def search():
+    if request.method == 'POST':
+        # Get the search term from the form
+        search_term = request.form.get('search_term', '')
+
+        # Query trivia sets matching the search term in 'set_title' or 'category'
+        trivia_sets = TriviaSet.query.filter(
+            or_(TriviaSet.set_title.ilike(f"%{search_term}%"), TriviaSet.category.ilike(f"%{search_term}%"))
+        ).all()
+
+        return render_template('search.html', trivia_sets=trivia_sets, search_term=search_term)
+
+    return render_template('search.html')
+
 
 @app.route("/logout")
 @login_required # only logged-in users can access this route
