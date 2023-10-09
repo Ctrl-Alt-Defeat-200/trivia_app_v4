@@ -332,6 +332,23 @@ def delete_trivia_set(trivia_set_id):
         # Trivia set with the given trivia_set_id does not exist
         return "Trivia set not found", 404
 
+@app.route('/play_set/<int:set_id>', methods=['GET'])
+def play_set(set_id):
+    # Retrieve the trivia set and its questions based on set_id
+    trivia_set = TriviaSet.query.get_or_404(set_id)
+    questions = trivia_set.questions
+    question_answer_dict = {}
+    
+    for question in questions:
+        # Query the database to get the correct option(s) for a question
+        correct_options = Option.query.filter_by(question_id=question.id, is_correct=True).all()
+
+        # Extract the text of the correct option(s)
+        correct_answers = [option.text for option in correct_options]
+
+        question_answer_dict[question.id] = correct_answers
+
+    return render_template('play_set.html', trivia_set=trivia_set, questions=questions, question_answer_dict=question_answer_dict)
 
 
 @app.route("/logout")
