@@ -102,6 +102,30 @@ def loader_user(user_id):
 def home():
 	return render_template("index.html")
 
+@app.route('/print_database')
+def print_database():
+    trivia_sets = TriviaSet.query.all()
+    questions = Question.query.all()
+
+    # Print the contents of the TriviaSet model
+    print("Trivia Sets:")
+    for trivia_set in trivia_sets:
+        print(f"Title: {trivia_set.set_title}, Category: {trivia_set.category}, Difficulty: {trivia_set.difficulty}")
+        for question in trivia_set.questions:
+            print(f"  Question: {question.question_text}, Type: {question.question_type}")
+            for option in question.options:
+                print(f"    Option: {option.text}, Correct: {option.is_correct}")
+
+    # Print the contents of the Question model
+    print("Questions:")
+    for question in questions:
+        print(f"Question: {question.question_text}, Type: {question.question_type}")
+        for option in question.options:
+            print(f"  Option: {option.text}, Correct: {option.is_correct}")
+
+    return "Check the console for database contents"
+
+
 @app.route('/dashboard')
 @login_required  # only logged-in users can access this route
 def dashboard():
@@ -173,7 +197,6 @@ def create_trivia_set():
 
         # Create a new trivia set associated with the current user
         if isinstance(current_user, User):
-            
             new_trivia_set_id = str(uuid.uuid4())
             
             new_trivia_set = TriviaSet(
@@ -190,8 +213,12 @@ def create_trivia_set():
             question_index = 0  # Counter for questions
 
             while True:
-                question_text_key = f'questions_{question_index}_text'
-                question_type_key = f'questions_{question_index}_type'
+                # question_text_key = f'questions_{question_index}_text'
+                # question_type_key = f'questions_{question_index}_type'
+                # question_text = request.form.get(question_text_key)
+                # question_type = request.form.get(question_type_key)
+                question_text_key = f'question_{question_index}'
+                question_type_key = f'question_type_{question_index}'
                 question_text = request.form.get(question_text_key)
                 question_type = request.form.get(question_type_key)
 
@@ -207,8 +234,10 @@ def create_trivia_set():
                     option_index = 0  # Counter for options
 
                     while True:
-                        option_text_key = f'options_{question_index}_{option_index}_text'
-                        option_is_correct_key = f'options_{question_index}_{option_index}_is_correct'
+                        # option_text_key = f'options_{question_index}_{option_index}_text'
+                        # option_is_correct_key = f'options_{question_index}_{option_index}_is_correct'
+                        option_text_key = f'option_{question_index}_{option_index}'
+                        option_is_correct_key = f'is_correct_{question_index}_{option_index}'
                         
                         option_text = request.form.get(option_text_key)
                         option_is_correct = request.form.get(option_is_correct_key)
@@ -227,7 +256,8 @@ def create_trivia_set():
                         option_index += 1
 
                 elif question_type == 'open_ended':
-                    open_ended_answer_key = f'open_ended_{question_index}_text'
+                    # open_ended_answer_key = f'open_ended_{question_index}_text'
+                    open_ended_answer_key = f'correct_answer_{question_index}'
                     open_ended_answer = request.form.get(open_ended_answer_key)
 
                     if open_ended_answer:
@@ -235,7 +265,7 @@ def create_trivia_set():
                         new_option = Option(
                             text=open_ended_answer,
                             is_correct=True,
-                            question_id=new_question.id # type:ignore
+                            # question_id=new_question.id # type:ignore
                         )
                         new_question.options.append(new_option)
                         db.session.add(new_option)
@@ -254,30 +284,31 @@ def edit_trivia_set(trivia_set_id):
     trivia_set = TriviaSet.query.filter_by(trivia_set_id=trivia_set_id).first()
 
     if trivia_set:
+        existing_questions = trivia_set.questions
+        
         # Check if the current user is the creator of the trivia set
-        if current_user.id == trivia_set.user_id: # type:ignore
-            
+        if current_user.id == trivia_set.user_id: #type: ignore
             if request.method == 'POST':
                 # Handle the form submission for editing the trivia set
                 # Update the trivia set's properties as needed
                 trivia_set.set_title = request.form.get('set_title')
                 trivia_set.category = request.form.get('category')
                 trivia_set.difficulty = request.form.get('difficulty')
-                
+
                 # Update the trivia set's questions and options
                 updated_questions = []
 
-                for i, question in enumerate(trivia_set.questions):
-                    question_text_key = f'questions_{i}_text'
+                for i, existing_question in enumerate(trivia_set.questions):
+                    question_text_key = f'questions_text[{i}]'
                     question_text = request.form.get(question_text_key)
-                    question.question_text = question_text
+                    existing_question.question_text = question_text
 
                     # Update question options
                     updated_options = []
 
-                    for j, option in enumerate(question.options):
-                        option_text_key = f'options_{i}_{j}_text'
-                        option_is_correct_key = f'options_{i}_{j}_is_correct'
+                    for j, option in enumerate(existing_question.options):
+                        option_text_key = f'options_text[{i}]'
+                        option_is_correct_key = f'options_is_correct[{i}]'
 
                         option_text = request.form.get(option_text_key)
                         is_correct = request.form.get(option_is_correct_key)
@@ -288,17 +319,18 @@ def edit_trivia_set(trivia_set_id):
                         )
                         updated_options.append(new_option)
 
-                    question.options = updated_options
-                    updated_questions.append(question)
+                    # question.options = updated_options
+                    # updated_questions.append(question)
+                    existing_question.options = updated_options
+                    updated_questions.append(existing_question)
 
                 trivia_set.questions = updated_questions
                 db.session.commit()
-                
+
                 # Redirect to the dashboard or the edited trivia set's page
                 return redirect(url_for('dashboard'))
-            
-            # Render the edit trivia set form
-            return render_template('edit_trivia_set.html', trivia_set=trivia_set)
+
+            return render_template('edit_trivia_set.html', trivia_set=trivia_set, existing_questions=existing_questions)
         else:
             # The current user is not the creator of the trivia set, so they can't edit it
             flash("You do not have permission to edit this trivia set.", "error")
@@ -306,6 +338,8 @@ def edit_trivia_set(trivia_set_id):
     else:
         # Trivia set with the given trivia_set_id does not exist
         return "Trivia set not found", 404
+
+
 
 
 @app.route('/delete_trivia_set/<trivia_set_id>', methods=['POST'])
@@ -333,6 +367,8 @@ def delete_trivia_set(trivia_set_id):
     else:
         # Trivia set with the given trivia_set_id does not exist
         return "Trivia set not found", 404
+    
+
 
 
 

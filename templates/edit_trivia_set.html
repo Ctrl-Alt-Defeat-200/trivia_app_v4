@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Edit Trivia Set</title>
 </head>
+
 <body>
     <h1>Edit Trivia Set</h1>
     <form method="POST" action="{{ url_for('edit_trivia_set', trivia_set_id=trivia_set.trivia_set_id) }}">
@@ -14,30 +16,45 @@
 
         <label for="difficulty">Difficulty:</label>
         <select name="difficulty" required>
-            <option value="easy" {% if trivia_set.difficulty == 'easy' %}selected{% endif %}>Easy</option>
-            <option value="medium" {% if trivia_set.difficulty == 'medium' %}selected{% endif %}>Medium</option>
-            <option value="hard" {% if trivia_set.difficulty == 'hard' %}selected{% endif %}>Hard</option>
+            <option value="easy" {% if trivia_set.difficulty=='easy' %}selected{% endif %}>Easy</option>
+            <option value="medium" {% if trivia_set.difficulty=='medium' %}selected{% endif %}>Medium</option>
+            <option value="hard" {% if trivia_set.difficulty=='hard' %}selected{% endif %}>Hard</option>
         </select><br><br>
+        
 
-        {% for question in trivia_set.questions %}
-        <div class="question">
-            <label for="question_text">Question:</label>
-            <input type="text" name="questions_{{ loop.index0 }}_text" value="{{ question.question_text }}" required><br><br>
+        <div id="questions-container">
+            <!-- Populate existing questions and options using a loop -->
+            {% for question in existing_questions %}
+            <div class="question">
+                <label for="question_text_{{ loop.index }}">Question:</label>
+            <input type="text" id="question_text_{{ loop.index }}" name="questions_text[]" value="{{ question.question_text }}" required><br><br>
 
-            <label>Options:</label><br>
-            {% for option in question.options %}
-            <div class="option">
-                <label for="option_text">Option:</label>
-                <input type="text" name="options_{{ loop.parent.loop.index0 }}_{{ loop.index0 }}_text" value="{{ option.text }}" required>
+            <label for="question_type_{{ loop.index }}">Question Type:</label>
+            <select id="question_type_{{ loop.index }}" name="questions_type[]">
+                <option value="multiple_choice" {% if question.question_type == 'multiple_choice' %}selected{% endif %}>Multiple Choice</option>
+                <option value="open_ended" {% if question.question_type == 'open_ended' %}selected{% endif %}>Open Ended</option>
+            </select><br><br>
+            
 
-                <label for="option_is_correct">Is Correct:</label>
-                <input type="checkbox" name="options_{{ loop.parent.loop.index0 }}_{{ loop.index0 }}_is_correct" {% if option.is_correct %}checked{% endif %}>
+                <!-- Options for multiple-choice questions -->
+                {% if question.question_type == 'multiple_choice' %}
+                {% for option in question.options %}
+                <div class="option">
+                    <label for="option_text_{{ loop.parent.loop.index }}_{{ loop.index }}">Option:</label>
+                        <input type="text" id="option_text_{{ loop.parent.loop.index }}_{{ loop.index }}" name="options_text[{{ loop.parent.loop.index }}]" value="{{ option.text }}" required>
+
+                        <label for="is_correct_{{ loop.parent.loop.index }}_{{ loop.index }}">Is Correct:</label>
+                        <input type="checkbox" id="is_correct_{{ loop.parent.loop.index }}_{{ loop.index }}" name="options_is_correct[{{ loop.parent.loop.index }}]" {% if option.is_correct %}checked{% endif %}>
+                </div>
+                {% endfor %}
+                {% endif %}
             </div>
             {% endfor %}
         </div>
-        {% endfor %}
 
+        <button type="button" id="add-question">Add Question</button>
         <input type="submit" value="Save Changes">
     </form>
 </body>
+
 </html>
