@@ -3,6 +3,7 @@ from flask import Flask, render_template, request, url_for, redirect, session, f
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, UserMixin, login_user, logout_user, current_user, login_required
 from sqlalchemy import or_
+from flask_migrate import Migrate
 import uuid
 
 
@@ -10,6 +11,7 @@ app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///db.sqlite"
 app.config["SECRET_KEY"] = "abc"
 db = SQLAlchemy()
+migrate = Migrate(app, db, render_as_batch=True)
 
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -22,7 +24,9 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String(120), unique=True, nullable=False)
     username = db.Column(db.String(80), unique=True, nullable=False)
     password = db.Column(db.String(length=120), nullable=False)
-    is_active = db.Column(db.Boolean, default=True)  # Add the 'is_active' attribute
+    is_active = db.Column(db.Boolean, default=True)
+
+
 
     def get_id(self):
         return str(self.id)
@@ -31,20 +35,16 @@ class User(db.Model, UserMixin):
         self.username = username
         self.email = email
         self.password = password
-        
+
 class TriviaSet(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     set_title = db.Column(db.String(100), nullable=False)
     category = db.Column(db.String(50), nullable=False)
     difficulty = db.Column(db.String(50), nullable=False)
-    questions = db.relationship('Question', backref='trivia_set')
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-
-    # Add the following line to establish a relationship with the User model
-    creator = db.relationship('User', backref='created_trivia_sets')
-
-    # Add a new field for a unique trivia_set_id
     trivia_set_id = db.Column(db.String(50), unique=True, nullable=False)
+
+    questions = db.relationship('Question', backref='trivia_set', lazy='dynamic')
 
     def __init__(self, set_title, category, difficulty, user_id, trivia_set_id):
         self.set_title = set_title
@@ -54,18 +54,19 @@ class TriviaSet(db.Model):
         self.trivia_set_id = trivia_set_id
 
 
-
 class Question(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     question_text = db.Column(db.String(255), nullable=False)
     question_type = db.Column(db.Enum('multiple_choice', 'open_ended'), nullable=False)
-    
-    # Define a one-to-many relationship for options if it's a multiple choice question
-    options = db.relationship('Option', backref='question', lazy=True, uselist=True)
     trivia_set_id = db.Column(db.Integer, db.ForeignKey('trivia_set.id'), nullable=False)
-    def __init__(self, question_text, question_type):
+
+    options = db.relationship('Option', backref='question', lazy='dynamic')
+
+    def __init__(self, question_text, question_type, trivia_set_id):
         self.question_text = question_text
         self.question_type = question_type
+        self.trivia_set_id = trivia_set_id
+
 
 class Option(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -73,9 +74,11 @@ class Option(db.Model):
     is_correct = db.Column(db.Boolean, default=False, nullable=False)
     question_id = db.Column(db.Integer, db.ForeignKey('question.id'), nullable=False)
 
-    def __init__(self, text, is_correct=False):
+    def __init__(self, text, question_id, is_correct=False):
         self.text = text
         self.is_correct = is_correct
+        self.question_id = question_id
+
 
 class UserScore(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -83,16 +86,18 @@ class UserScore(db.Model):
     trivia_set_id = db.Column(db.Integer, db.ForeignKey('trivia_set.id'), nullable=False)
     score = db.Column(db.Integer, nullable=False)
 
-    def __init__(self, id, trivia_set_id, score):
-        self.id=id
-        self.trivia_set_id=trivia_set_id
-        self.score=score
+    def __init__(self, user_id, trivia_set_id, score):
+        self.user_id = user_id
+        self.trivia_set_id = trivia_set_id
+        self.score = score
 
 
 
 
 def generate_unique_id():
     return str(uuid.uuid4())
+
+
 
 def calculate_score(trivia_set, user_answers):
     score = 0
@@ -479,4 +484,4 @@ def logout():
 if __name__ == "__main__":
     with app.app_context():
         db.create_all()
-    app.run(debug=True)
+    app.run(debug=True, host='0.0.0.0')
