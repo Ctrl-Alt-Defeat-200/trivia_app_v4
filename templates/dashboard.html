@@ -18,11 +18,13 @@
                 <form method="POST" action="{{ url_for('delete_trivia_set', trivia_set_id=trivia_set.trivia_set_id) }}">
                     <button type="submit">Delete</button>
                 </form>    
-                <!-- Add a button to create a new trivia set -->
-                <a href="{{ url_for('create_trivia_set') }}">Create New Trivia Set</a>
+
+                
             </form>
             </li>
         {% endfor %}
+        <!-- Add a button to create a new trivia set -->        
+        <a href="{{ url_for('create_trivia_set') }}">Create New Trivia Set</a>
     </ul>
 
 
