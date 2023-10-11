@@ -4,15 +4,24 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, UserMixin, login_user, logout_user, current_user, login_required
 from sqlalchemy import or_
 from flask_migrate import Migrate
+from flask_caching import Cache
 import uuid
 
-
+# Configure app
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///db.sqlite"
 app.config["SECRET_KEY"] = "abc"
 db = SQLAlchemy()
+
+# Configure migration
 migrate = Migrate(app, db, render_as_batch=True)
 
+#Configure caching
+app.config['CACHE_TYPE'] = 'simple'
+app.config['CACHE_DEFAULT_TIMEOUT'] = 300   #seconds
+cache = Cache(app)
+
+#Configure login
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = "login"  # type:ignore
@@ -114,6 +123,25 @@ def calculate_score(trivia_set, user_answers):
     return score
 
 
+@cache.memoize()
+def get_top_scores(userId):
+    player = User.query.get(userId)
+    if player is None:
+        return None
+    
+    scores = (
+        db.session.query(UserScore.score, UserScore.trivia_set_id, TriviaSet.set_title)
+        .join(TriviaSet, UserScore.trivia_set_id == TriviaSet.id)
+        .filter(UserScore.user_id == userId)
+        .order_by(UserScore.score.desc())
+        .limit(3)
+        .all()
+    )
+    
+    top_scores = [(score.score, score.trivia_set_id, score.set_title) for score in scores]
+    
+    return top_scores
+
 
 #--------------------------------------------------------------------------------------
 
@@ -157,7 +185,9 @@ def print_database():
                 if correct_option:
                     print(f"Correct Answer: {correct_option.text}")
 
+
             print("\n")
+
 
         return "Database contents printed in the terminal."
 
@@ -169,8 +199,9 @@ def dashboard():
     if isinstance(current_user, UserMixin) and current_user.is_authenticated:
         # Query the user's trivia sets from the database
         user_trivia_sets = TriviaSet.query.filter_by(user_id=current_user.id).all() # type: ignore
-        
-        return render_template("dashboard.html", current_user=current_user, user_trivia_sets=user_trivia_sets)
+        user_top_scores = get_top_scores(current_user.id)
+        print(user_top_scores)
+        return render_template("dashboard.html", current_user=current_user, user_trivia_sets=user_trivia_sets, user_top_scores = user_top_scores)
     else:
         print('User is not authenticated')
         return redirect(url_for('login'))
