@@ -239,7 +239,7 @@ def create_trivia_set():
         db.session.commit()
 
         # Process and save questions and options
-        for question_num in range(1, 11):
+        for question_num in range(1, 6):
             question_text = request.form.get(f'question_{question_num}')
             options = request.form.getlist(f'question_{question_num}_options[]')
             correct_option = int(request.form.get(f'correct_option_{question_num}')) # type:ignore
