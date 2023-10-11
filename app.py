@@ -24,9 +24,7 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String(120), unique=True, nullable=False)
     username = db.Column(db.String(80), unique=True, nullable=False)
     password = db.Column(db.String(length=120), nullable=False)
-    is_active = db.Column(db.Boolean, default=True)
-
-
+    is_active = db.Column(db.Boolean, default=True, nullable=False)
 
     def get_id(self):
         return str(self.id)
