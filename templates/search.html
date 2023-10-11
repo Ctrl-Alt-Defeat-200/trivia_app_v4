@@ -1,28 +1,37 @@
 <!DOCTYPE html>
 <html>
-<head>
+  <head>
     <title>Search Trivia Sets</title>
-</head>
-<body>
-    <h1>Search Trivia Sets</h1>
-    <form method="POST" action="/search">
-        <input type="text" name="search_term" placeholder="Enter search term">
-        <input type="submit" value="Search">
-    </form>
+    <link rel="stylesheet" href="/static/search.css" />
+  </head>
+  <body>
+    <div class="container">
+      <h1>Search Trivia Sets</h1>
+      <form method="POST" action="/search">
+        <input type="text" name="search_term" placeholder="Enter search term" />
+        <input type="submit" value="Search" class="btn" />
+      </form>
 
-    {% if trivia_sets %}
-    <h2>Search Results</h2>
-    <p>Search term: {{ search_term }}</p>
-    <ul>
-        {% for trivia_set in trivia_sets %}
-            <li>
-                <strong>Set Title:</strong> {{ trivia_set.set_title }}<br>
-                <strong>Category:</strong> {{ trivia_set.category }}<br>
-                <strong>Difficulty:</strong> {{ trivia_set.difficulty }}
-            </li>
-        {% endfor %}
-    </ul>
+      <div class="searchResults">
+        {% if trivia_sets %}
+        <h2>Search Results</h2>
+        <p>Search term: {{ search_term }}</p>
+        <ul>
+          {% for trivia_set in trivia_sets %}
+          <li>
+            <strong>Set Title:</strong> {{ trivia_set.set_title }}<br />
+            <strong>Category:</strong> {{ trivia_set.category }}<br />
+            <strong>Difficulty:</strong> {{ trivia_set.difficulty }}
+          </li>
+          {% endfor %}
+        </ul>
 
-{% endif %}
-</body>
+        <form method="GET" action="/search">
+          <input type="submit" value="Clear Results" class="btn" />
+        </form>
+      </div>
+
+      {% endif %}
+    </div>
+  </body>
 </html>

@@ -13,9 +13,6 @@ body {
     cursor: url('pointer.png') 16 16, auto;
 }
 
-
-
-
 h1{
     color: rgb(247, 231, 246);
     margin-bottom: 20px;
@@ -46,7 +43,7 @@ h2{
 }
 
 
-form{
+button{
     margin:20px auto;
     padding: 20px;
     background-color: #fffefeea ;
@@ -78,7 +75,6 @@ ul{
     font-size: 18px ;
     font-family: 'Autour One', cursive;
     text-shadow: 0px 0px 3px #76a9eb,0 0 5px #b573cd ;
-
 
 }
 

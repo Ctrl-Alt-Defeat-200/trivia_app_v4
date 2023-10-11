@@ -1,41 +1,52 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Trivia Set</title>
 </head>
 <body>
     <h1>Edit Trivia Set</h1>
     <form method="POST" action="{{ url_for('edit_trivia_set', trivia_set_id=trivia_set.trivia_set_id) }}">
         <label for="set_title">Set Title:</label>
-        <input type="text" name="set_title" value="{{ trivia_set.set_title }}" required><br><br>
+        <input type="text" id="set_title" name="set_title" value="{{ trivia_set.set_title }}" required><br>
 
         <label for="category">Category:</label>
-        <input type="text" name="category" value="{{ trivia_set.category }}" required><br><br>
+        <input type="text" id="category" name="category" value="{{ trivia_set.category }}" required><br /><br />
 
         <label for="difficulty">Difficulty:</label>
-        <select name="difficulty" required>
+        <select id="difficulty" name="difficulty" required>
             <option value="easy" {% if trivia_set.difficulty == 'easy' %}selected{% endif %}>Easy</option>
             <option value="medium" {% if trivia_set.difficulty == 'medium' %}selected{% endif %}>Medium</option>
             <option value="hard" {% if trivia_set.difficulty == 'hard' %}selected{% endif %}>Hard</option>
-        </select><br><br>
+        </select><br>
 
-        {% for question in trivia_set.questions %}
-        <div class="question">
-            <label for="question_text">Question:</label>
-            <input type="text" name="questions_{{ loop.index0 }}_text" value="{{ question.question_text }}" required><br><br>
-
-            <label>Options:</label><br>
-            {% for option in question.options %}
-            <div class="option">
-                <label for="option_text">Option:</label>
-                <input type="text" name="options_{{ loop.parent.loop.index0 }}_{{ loop.index0 }}_text" value="{{ option.text }}" required>
-
-                <label for="option_is_correct">Is Correct:</label>
-                <input type="checkbox" name="options_{{ loop.parent.loop.index0 }}_{{ loop.index0 }}_is_correct" {% if option.is_correct %}checked{% endif %}>
-            </div>
+        <h2>Questions</h2>
+        <ol>
+            {% set question_index = 0 %}
+            {% for question in trivia_set.questions %}
+            <li>
+                <label for="question_text_{{ question_index }}">Question {{ question_index + 1 }}:</label>
+                <input type="text" id="question_text_{{ question_index }}" name="questions_{{ question_index }}_text" value="{{ question.question_text }}" required>
+                
+                <ul>
+                    {% set option_index = 0 %}
+                    {% for option in question.options %}
+                    <li>
+                        <label for="option_{{ question_index }}_{{ option_index }}">
+                            Option {{ option_index + 1 }}:
+                            <input type="text" id="option_{{ question_index }}_{{ option_index }}" name="options_{{ question_index }}_{{ option_index }}_text" value="{{ option.text }}" required>
+                            <input type="radio" id="correct_option_{{ question_index }}_{{ option_index }}" name="correct_option_{{ question_index }}" value="{{ option_index }}" {% if option.is_correct %}checked{% endif %}>
+                            <label for="correct_option_{{ question_index }}_{{ option_index }}">Correct</label>
+                        </label>
+                    </li>
+                    {% set option_index = option_index + 1 %}
+                    {% endfor %}
+                </ul>
+            </li>
+            {% set question_index = question_index + 1 %}
             {% endfor %}
-        </div>
-        {% endfor %}
+        </ol>
 
         <input type="submit" value="Save Changes">
     </form>
