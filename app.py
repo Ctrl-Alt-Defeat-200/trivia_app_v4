@@ -138,7 +138,7 @@ def get_top_scores(userId):
         .all()
     )
     
-    top_scores = [(score.score, score.trivia_set_id, score.set_title) for score in scores]
+    top_scores = [(str(score.score), str(score.trivia_set_id), score.set_title) for score in scores]
     
     return top_scores
 
@@ -200,8 +200,8 @@ def dashboard():
         # Query the user's trivia sets from the database
         user_trivia_sets = TriviaSet.query.filter_by(user_id=current_user.id).all() # type: ignore
         user_top_scores = get_top_scores(current_user.id)
-        print(user_top_scores)
-        return render_template("dashboard.html", current_user=current_user, user_trivia_sets=user_trivia_sets, user_top_scores = user_top_scores)
+        #print(user_top_scores)
+        return render_template("dashboard.html", current_user=current_user, user_trivia_sets=user_trivia_sets, user_top_scores=user_top_scores)
     else:
         print('User is not authenticated')
         return redirect(url_for('login'))
