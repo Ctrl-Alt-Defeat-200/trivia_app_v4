@@ -1,6 +1,6 @@
 # app.py
 from flask import Flask, render_template, request, url_for, redirect, session, flash
-from flask_sqlalchemy import SQLAlchemy
+from flask_sqlalchemy import SQLAlchemy 
 from flask_login import LoginManager, UserMixin, login_user, logout_user, current_user, login_required
 from sqlalchemy import or_
 from flask_migrate import Migrate
