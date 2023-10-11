@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Trivia Set</title>
+</head>
+<body>
+    <h1>Update Trivia Set</h1>
+    <form method="POST" action="{{ url_for('update_trivia_set', trivia_set_id=trivia_set.trivia_set_id) }}">
+        <label for="set_title">Set Title:</label>
+        <input type="text" id="set_title" name="set_title" value="{{ trivia_set.set_title }}" required><br>
+
+        <label for="category">Category:</label>
+        <input type="text" id="category" name="category" value="{{ trivia_set.category }}" required><br /><br />
+
+        <label for="difficulty">Difficulty:</label>
+        <select id="difficulty" name="difficulty" required>
+            <option value="easy" {% if trivia_set.difficulty == "easy" %}selected{% endif %}>Easy</option>
+            <option value="medium" {% if trivia_set.difficulty == "medium" %}selected{% endif %}>Medium</option>
+            <option value="hard" {% if trivia_set.difficulty == "hard" %}selected{% endif %}>Hard</option>
+        </select><br>
+
+        <h2>Questions</h2>
+        <ol>
+            {% for question in trivia_set.questions %}
+            <li>
+                <label for="question_{{ loop.index }}">Question {{ loop.index }}:</label>
+                <input type="text" id="question_{{ loop.index }}" name="question_{{ loop.index }}" value="{{ question.question_text }}" required>
+
+                <ul>
+                    {% for option in question.options %}
+                    <li>
+                        <label for="question_{{ loop.parent.index }}_option_{{ loop.index }}">Option {{ loop.index }}:</label>
+                        <input type="text" id="question_{{ loop.parent.index }}_option_{{ loop.index }}" name="question_{{ loop.parent.index }}_options[]" value="{{ option.text }}" required>
+                        <input type="radio" id="correct_option_{{ loop.parent.index }}_{{ loop.index }}" name="correct_option_{{ loop.parent.index }}" value="{{ loop.index }}" {% if option.is_correct %}checked{% endif %}>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </li>
+            {% endfor %}
+        </ol>
+
+        <input type="submit" value="Update Trivia Set">
+    </form>
+</body>
+</html>
