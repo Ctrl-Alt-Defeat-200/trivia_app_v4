@@ -2,29 +2,35 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Autour+One&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='dashboard.css') }}">
     <title>Dashboard</title>
 </head>
 <body>
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='dashboard.css') }}">
-
     <h1>Welcome, {{ current_user.username }}!</h1>
     <form>
-    <ul>
+    <h2>Your Trivia Sets</h2>
+        <ul>
         {% for trivia_set in user_trivia_sets %}
             <li>
                 {{ trivia_set.set_title }}
-                <a href="{{ url_for('play_set', set_id=trivia_set.trivia_set_id) }}">Play</a>
-                <a href="{{ url_for('edit_trivia_set', trivia_set_id=trivia_set.trivia_set_id) }}">Edit</a>
+                <a href="{{ url_for('edit_trivia_set', trivia_set_id=trivia_set.trivia_set_id) }}" class="edit-button">Edit</a>
                 <form method="POST" action="{{ url_for('delete_trivia_set', trivia_set_id=trivia_set.trivia_set_id) }}">
-                    <button type="submit">Delete</button>
-                </form>    
-                <!-- Add a button to create a new trivia set -->
-                <a href="{{ url_for('create_trivia_set') }}">Create New Trivia Set</a>
-            </form>
+                    <button type="submit" class ="delete-button">Delete</button>
+                
+                
+                </form>
+            
             </li>
         {% endfor %}
+        <!-- Add a button to create a new trivia set -->        
+        <a href="{{ url_for('create_trivia_set') }}">Create New Trivia Set</a>
     </ul>
 
+    <!-- Add a button to create a new trivia set -->
+    <a href="{{ url_for('create_trivia_set') }} " class="button-link">Create New Trivia Set</a>
 
 </body>
 </html>
