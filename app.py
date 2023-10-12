@@ -294,6 +294,7 @@ def create_trivia_set():
 
 
 
+
 @app.route('/edit_trivia_set/<trivia_set_id>', methods=['GET', 'POST'])
 @login_required
 def edit_trivia_set(trivia_set_id):
@@ -301,7 +302,11 @@ def edit_trivia_set(trivia_set_id):
     trivia_set = TriviaSet.query.filter_by(trivia_set_id=trivia_set_id).first()
 
     # Check if the logged-in user is the owner of the trivia set
-    if trivia_set.user_id != current_user.id: # type: ignore
+    if trivia_set is None:
+        flash("Trivia set not found.", "error")
+        return redirect(url_for('dashboard'))
+
+    if trivia_set.user_id != current_user.id: #type:ignore
         flash("You do not have permission to edit this trivia set.", "error")
         return redirect(url_for('dashboard'))
 
@@ -312,24 +317,29 @@ def edit_trivia_set(trivia_set_id):
         difficulty = request.form.get('difficulty')
 
         # Update the trivia set data
-        trivia_set.set_title = set_title # type: ignore
-        trivia_set.category = category # type: ignore
-        trivia_set.difficulty = difficulty # type: ignore
+        trivia_set.set_title = set_title
+        trivia_set.category = category
+        trivia_set.difficulty = difficulty
 
         # Update questions and options
         for question_num in range(1, 11):
-            question_text = request.form.get(f'question_{question_num}')
-            options = request.form.getlist(f'question_{question_num}_options[]')
-            correct_option = int(request.form.get(f'correct_option_{question_num}')) # type: ignore
+            question_text = request.form.get(f'questions_{question_num}_text')
+            question = trivia_set.questions[question_num - 1]
 
-            question = trivia_set.questions[question_num - 1] # type: ignore
-            question.question_text = question_text
+            if question_text:
+                question.question_text = question_text
 
-            for option_num, option_text in enumerate(options, start=1):
-                is_correct = (option_num == correct_option)
+            for option_num in range(1, 5):
+                option_text = request.form.get(f'options_{question_num}_{option_num}_text')
                 option = question.options[option_num - 1]
-                option.text = option_text
+
+                if option_text is not None:
+                    option.text = option_text
+
+                # Check if this option is the correct one based on the selected radio button
+                is_correct = (request.form.get(f'correct_option_{question_num}') == str(option_num))
                 option.is_correct = is_correct
+
 
         # Commit changes to the database
         db.session.commit()
