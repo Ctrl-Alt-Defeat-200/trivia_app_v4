@@ -138,7 +138,7 @@ def get_top_scores(userId):
         .all()
     )
     
-    top_scores = [(score.score, score.trivia_set_id, score.set_title) for score in scores]
+    top_scores = [(str(score.score), str(score.trivia_set_id), score.set_title) for score in scores]
     
     return top_scores
 
@@ -200,8 +200,8 @@ def dashboard():
         # Query the user's trivia sets from the database
         user_trivia_sets = TriviaSet.query.filter_by(user_id=current_user.id).all() # type: ignore
         user_top_scores = get_top_scores(current_user.id)
-        print(user_top_scores)
-        return render_template("dashboard.html", current_user=current_user, user_trivia_sets=user_trivia_sets, user_top_scores = user_top_scores)
+        #print(user_top_scores)
+        return render_template("dashboard.html", current_user=current_user, user_trivia_sets=user_trivia_sets, user_top_scores=user_top_scores)
     else:
         print('User is not authenticated')
         return redirect(url_for('login'))
@@ -294,6 +294,7 @@ def create_trivia_set():
 
 
 
+
 @app.route('/edit_trivia_set/<trivia_set_id>', methods=['GET', 'POST'])
 @login_required
 def edit_trivia_set(trivia_set_id):
@@ -301,7 +302,11 @@ def edit_trivia_set(trivia_set_id):
     trivia_set = TriviaSet.query.filter_by(trivia_set_id=trivia_set_id).first()
 
     # Check if the logged-in user is the owner of the trivia set
-    if trivia_set.user_id != current_user.id: # type: ignore
+    if trivia_set is None:
+        flash("Trivia set not found.", "error")
+        return redirect(url_for('dashboard'))
+
+    if trivia_set.user_id != current_user.id: #type:ignore
         flash("You do not have permission to edit this trivia set.", "error")
         return redirect(url_for('dashboard'))
 
@@ -312,24 +317,29 @@ def edit_trivia_set(trivia_set_id):
         difficulty = request.form.get('difficulty')
 
         # Update the trivia set data
-        trivia_set.set_title = set_title # type: ignore
-        trivia_set.category = category # type: ignore
-        trivia_set.difficulty = difficulty # type: ignore
+        trivia_set.set_title = set_title
+        trivia_set.category = category
+        trivia_set.difficulty = difficulty
 
         # Update questions and options
         for question_num in range(1, 11):
-            question_text = request.form.get(f'question_{question_num}')
-            options = request.form.getlist(f'question_{question_num}_options[]')
-            correct_option = int(request.form.get(f'correct_option_{question_num}')) # type: ignore
+            question_text = request.form.get(f'questions_{question_num}_text')
+            question = trivia_set.questions[question_num - 1]
 
-            question = trivia_set.questions[question_num - 1] # type: ignore
-            question.question_text = question_text
+            if question_text:
+                question.question_text = question_text
 
-            for option_num, option_text in enumerate(options, start=1):
-                is_correct = (option_num == correct_option)
+            for option_num in range(1, 5):
+                option_text = request.form.get(f'options_{question_num}_{option_num}_text')
                 option = question.options[option_num - 1]
-                option.text = option_text
+
+                if option_text is not None:
+                    option.text = option_text
+
+                # Check if this option is the correct one based on the selected radio button
+                is_correct = (request.form.get(f'correct_option_{question_num}') == str(option_num))
                 option.is_correct = is_correct
+
 
         # Commit changes to the database
         db.session.commit()

@@ -1,0 +1,116 @@
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center; 
+    height: 100vh; 
+    margin: 0;
+    padding: 0;
+    background-image: url(purpleplanet.png);
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+    cursor: url('pointer.png') 16 16, auto;
+    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+
+.container{
+    display: flex;
+    align-items: center;
+    text-align: center;
+    width: 75%;
+    background-color: #fffefeda ;
+    box-shadow: 0 0 10px rgb(150, 152, 154, 0); 
+    border-radius: 12px;
+    flex-wrap: wrap;
+}
+
+form {
+    width: 50%;
+    
+}
+
+.searchResults{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-radius: 12px;
+    width: 50%;
+    margin:0 auto;
+    padding: 10px;
+    text-align: center;
+    border-radius: 10px; 
+    margin: 10px auto;
+}
+
+.searchResults form{
+    width: 100%;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+}
+
+h1{
+    color: rgb(127, 43, 121);
+        margin-bottom: 40px;
+        font-style:normal;
+        font-size: 30px;
+        font-variant:small-caps ;
+        text-shadow: 0px 0px 3px #76a9eb,0 0 5px #b573cd ;
+}
+
+    h2{
+        color: rgb(127, 43, 121);
+        margin-bottom: 10px;
+        font-style:normal;
+        font-size: 30px;
+        font-variant:small-caps ;
+        text-shadow: 0px 0px 3px #76a9eb,0 0 5px #b573cd ;
+    }
+
+input {
+    height: 40px;
+    width: 75%;
+    border-radius: 12px;
+    cursor: url('pointer.png') 16 16, auto;
+}
+
+input[type="submit"] {
+    width: 50%;
+    padding: 10px;
+    background-image: linear-gradient( to right, rgb(150, 100, 170), rgb(17, 135, 232));
+    color: rgb(255, 255, 255);
+    font-size: 15px;
+    border:none;
+    border-radius: 12px;
+    cursor: pointer;
+    text-shadow: 1px 1px 1px #898c90e2;
+    box-shadow: 0 0 10px rgb(154, 150, 150);
+    font-variant: small-caps;
+    cursor: url('pointer.png') 16 16, auto;
+}
+
+input[type="submit"]:hover{
+    color: aqua;
+    font-variant: small-caps;
+    cursor: url('pointer.png') 16 16, auto;
+}
+
+ul{
+    list-style: none;
+}
+
+p {
+    padding-top: 15px;
+}
+
+.btn{
+    width: 100%;
+}
+
+input[type=text] {
+    font-variant: small-caps;
+    font-size: large;
+  }

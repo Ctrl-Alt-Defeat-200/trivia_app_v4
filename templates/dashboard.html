@@ -31,6 +31,13 @@
 
     <!-- Add a button to create a new trivia set -->
     <a href="{{ url_for('create_trivia_set') }} " class="button-link">Create New Trivia Set</a>
+    
+    <br />
+
+    <h2>Your Top Scores</h2>
+    {% for score_tuple in user_top_scores %}
+        <p style="color: white">Score: {{ score_tuple[0] }}, Set Name: {{ score_tuple[2] }}</p><br>
+    {% endfor %}
 
 </body>
 </html>
