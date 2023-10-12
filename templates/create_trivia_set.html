@@ -1,8 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<html>
+  <head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Autour+One&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='trivia_set.css') }}">
     <title>Create Trivia Set</title>
 </head>
 <body>
@@ -21,30 +23,91 @@
             <option value="hard">Hard</option>
         </select><br>
 
-        <h2>Questions</h2>
-        <ol>
-            {% for question_num in range(1, 11) %}
-            <li>
-                <label for="question_{{ question_num }}">Question {{ question_num }}:</label>
-                <input type="text" id="question_{{ question_num }}" name="question_{{ question_num }}" required>
-                
-                <ul>
-                    {% for option_num in range(1, 5) %}
-                    <li>
-                        <label for="question_{{ question_num }}_option_{{ option_num }}">
-                            Option {{ option_num }}:
-                            <input type="text" id="question_{{ question_num }}_option_{{ option_num }}" name="question_{{ question_num }}_options[]" required>
-                            <input type="radio" id="correct_option_{{ question_num }}_{{ option_num }}" name="correct_option_{{ question_num }}" value="{{ option_num }}">
-                            <label for="correct_option_{{ question_num }}_{{ option_num }}">Correct</label>
-                        </label>
-                    </li>
-                    {% endfor %}
-                </ul>
-            </li>
-            {% endfor %}
-        </ol>
+      <!-- Questions and Options -->
+      <div id="questions-container">
+        <!--This is where dynamically added q's will show-->
+      </div>
+      <button type="button" id="add-question" class="action-button">Add Question</button>
 
-        <input type="submit" value="Create Trivia Set">
+      <input type="submit" value="Create Trivia Set" class="action-button" />
     </form>
-</body>
+
+    <br />
+    <a href="{{url_for('dashboard')}}"class="button-link">Back to Dashboard</a><br /><br />
+
+    <!-- JavaScript code for adding questions and options dynamically -->
+
+    <script>
+        const addQuestionButton = document.getElementById("add-question");
+        const questionsContainer = document.getElementById("questions-container");
+
+        let questionIndex = 0;
+
+        addQuestionButton.addEventListener("click", () => {
+            const questionDiv = document.createElement("div");
+            questionDiv.innerHTML = `
+                <hr />
+                <label for="question_${questionIndex}">Question:</label>
+                <input type="text" id="question_${questionIndex}" name="question_${questionIndex}" required /><br /><br />
+                
+                <label for="question_type_${questionIndex}">Question Type:</label>
+                <select id="question_type_${questionIndex}" name="question_type_${questionIndex}" required>
+                    <option value="multiple_choice">Multiple Choice</option>
+                    <option value="open_ended">Open Ended</option>
+                </select><br /><br />
+                
+                <div id="options-container_${questionIndex}">
+                    <!-- This is where dynamically added options will appear -->
+                </div>
+                <div id="correct-answer-container_${questionIndex}">
+                    <!-- This is where the correct answer for open-ended questions will appear -->
+                </div>
+                <button type="button" id="add-option_${questionIndex}" class="add-option-button">Add Option</button>
+            `;
+
+            questionsContainer.appendChild(questionDiv);
+
+            // Add an event listener for the "Add Option" button for this question
+            const addOptionButton = document.getElementById(`add-option_${questionIndex}`);
+            const optionsContainer = document.getElementById(`options-container_${questionIndex}`);
+            const correctAnswerContainer = document.getElementById(`correct-answer-container_${questionIndex}`);
+            let optionIndex = 0;
+
+            addOptionButton.addEventListener("click", () => {
+                const optionDiv = document.createElement("div");
+                optionDiv.innerHTML = `
+                    <label for="option_${questionIndex}_${optionIndex}">Option:</label>
+                    <input type="text" id="option_${questionIndex}_${optionIndex}" name="option_${questionIndex}_${optionIndex}" required /><br /><br />
+
+                    <label for="is_correct_${questionIndex}_${optionIndex}">Is Correct:</label>
+                    <input type="checkbox" id="is_correct_${questionIndex}_${optionIndex}" name="is_correct_${questionIndex}_${optionIndex}" /><br /><br />
+                `;
+
+                optionsContainer.appendChild(optionDiv);
+                optionIndex++;
+            });
+
+            // Add an event listener for the question type dropdown
+            const questionTypeDropdown = document.getElementById(`question_type_${questionIndex}`);
+            questionTypeDropdown.addEventListener("change", () => {
+                if (questionTypeDropdown.value === "open_ended") {
+                    const correctAnswerInput = document.createElement("input");
+                    correctAnswerInput.type = "text";
+                    correctAnswerInput.id = `correct_answer_${questionIndex}`;
+                    correctAnswerInput.name = `correct_answer_${questionIndex}`;
+                    correctAnswerInput.placeholder = "Correct Answer";
+                    correctAnswerContainer.appendChild(correctAnswerInput);
+                } else {
+                    // Remove the correct answer input field if question type is not open-ended
+                    correctAnswerContainer.innerHTML = "";
+                }
+            });
+
+            questionIndex++;
+        });
+    </script>
+   
+
+
+  </body>
 </html>

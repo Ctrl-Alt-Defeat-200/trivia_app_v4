@@ -1,18 +1,27 @@
 # app.py
 from flask import Flask, render_template, request, url_for, redirect, session, flash
-from flask_sqlalchemy import SQLAlchemy
+from flask_sqlalchemy import SQLAlchemy 
 from flask_login import LoginManager, UserMixin, login_user, logout_user, current_user, login_required
 from sqlalchemy import or_
 from flask_migrate import Migrate
+from flask_caching import Cache
 import uuid
 
-
+# Configure app
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///db.sqlite"
 app.config["SECRET_KEY"] = "abc"
 db = SQLAlchemy()
+
+# Configure migration
 migrate = Migrate(app, db, render_as_batch=True)
 
+#Configure caching
+app.config['CACHE_TYPE'] = 'simple'
+app.config['CACHE_DEFAULT_TIMEOUT'] = 300   #seconds
+cache = Cache(app)
+
+#Configure login
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = "login"  # type:ignore
@@ -24,9 +33,7 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String(120), unique=True, nullable=False)
     username = db.Column(db.String(80), unique=True, nullable=False)
     password = db.Column(db.String(length=120), nullable=False)
-    is_active = db.Column(db.Boolean, default=True)
-
-
+    is_active = db.Column(db.Boolean, default=True, nullable=False)
 
     def get_id(self):
         return str(self.id)
@@ -116,6 +123,25 @@ def calculate_score(trivia_set, user_answers):
     return score
 
 
+@cache.memoize()
+def get_top_scores(userId):
+    player = User.query.get(userId)
+    if player is None:
+        return None
+    
+    scores = (
+        db.session.query(UserScore.score, UserScore.trivia_set_id, TriviaSet.set_title)
+        .join(TriviaSet, UserScore.trivia_set_id == TriviaSet.id)
+        .filter(UserScore.user_id == userId)
+        .order_by(UserScore.score.desc())
+        .limit(3)
+        .all()
+    )
+    
+    top_scores = [(str(score.score), str(score.trivia_set_id), score.set_title) for score in scores]
+    
+    return top_scores
+
 
 #--------------------------------------------------------------------------------------
 
@@ -159,7 +185,9 @@ def print_database():
                 if correct_option:
                     print(f"Correct Answer: {correct_option.text}")
 
+
             print("\n")
+
 
         return "Database contents printed in the terminal."
 
@@ -171,8 +199,9 @@ def dashboard():
     if isinstance(current_user, UserMixin) and current_user.is_authenticated:
         # Query the user's trivia sets from the database
         user_trivia_sets = TriviaSet.query.filter_by(user_id=current_user.id).all() # type: ignore
-        
-        return render_template("dashboard.html", current_user=current_user, user_trivia_sets=user_trivia_sets)
+        user_top_scores = get_top_scores(current_user.id)
+        #print(user_top_scores)
+        return render_template("dashboard.html", current_user=current_user, user_trivia_sets=user_trivia_sets, user_top_scores=user_top_scores)
     else:
         print('User is not authenticated')
         return redirect(url_for('login'))
@@ -435,25 +464,43 @@ def delete_trivia_set(trivia_set_id):
         return "Trivia set not found", 404
 
 
+# Route to display results after the user submits their answers
+@app.route('/results/<int:set_id>')
+def results(set_id):
+    trivia_set = TriviaSet.query.get(set_id)
+    # Fetch the user's score for the specified trivia set from the database
+    # You can query the UserScore table based on the set_id and the current user's ID
+    # Assuming you have the necessary imports and database setup
+    user_score = UserScore.query.filter_by(trivia_set_id=set_id, user_id=current_user.id).first()
 
-@app.route('/play_set/<set_id>', methods=['GET'])
+    return render_template('results.html', trivia_set=trivia_set, user_score=user_score)
+
+@app.route('/play_set/<int:set_id>', methods=['GET', 'POST'])
+@login_required
 def play_set(set_id):
-    # Retrieve the trivia set and its questions based on set_id
-    trivia_set = TriviaSet.query.get_or_404(set_id)
-    questions = trivia_set.questions
-    question_answer_dict = {}
-    
-    for question in questions:
-        # Query the database to get the correct option(s) for a question
-        correct_options = Option.query.filter_by(question_id=question.id, is_correct=True).all()
+    trivia_set = TriviaSet.query.get(set_id)
+    if not trivia_set:
+        flash('Trivia set not found', 'danger')
+        return redirect(url_for('dashboard'))  # Redirect to a dashboard page or another route
 
-        # Extract the text of the correct option(s)
-        correct_answers = [option.text for option in correct_options]
+    if request.method == 'POST':
+        score = 0
+        for question_id, selected_option_id in request.form.items():
+            question = Question.query.get(question_id)
+            selected_option = Option.query.get(selected_option_id)
 
-        question_answer_dict[question.id] = correct_answers
+            if question and selected_option:
+                if selected_option.is_correct:
+                    score += 1
 
-    return render_template('play_set.html', trivia_set=trivia_set, questions=questions, question_answer_dict=question_answer_dict)
+        user_score = UserScore(user_id=current_user.id, trivia_set_id=set_id, score=score)
+        db.session.add(user_score)
+        db.session.commit()
+        flash(f'Your score: {score}', 'success')
+        return redirect(url_for('results', set_id=set_id))  # Redirect to a dashboard page or another route
 
+    questions = trivia_set.questions.all()
+    return render_template('play_set.html', trivia_set=trivia_set, questions=questions)
 
 
 @app.route('/search', methods=['GET', 'POST'])
