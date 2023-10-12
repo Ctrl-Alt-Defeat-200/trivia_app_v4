@@ -21,7 +21,17 @@
           <li>
             <strong>Set Title:</strong> {{ trivia_set.set_title }}<br />
             <strong>Category:</strong> {{ trivia_set.category }}<br />
-            <strong>Difficulty:</strong> {{ trivia_set.difficulty }}
+            <strong>Difficulty:</strong> {{ trivia_set.difficulty }}<br />
+            {% if current_user.is_authenticated %}
+  
+            <strong><a href="{{url_for('play_set', set_id=trivia_set.id)}}">Play</a></strong>
+
+            {% else %}
+
+            <strong><a href="{{url_for('guest_play_set', set_id=trivia_set.id)}}">Play</a></strong>
+
+            {% endif %}
+            
           </li>
           {% endfor %}
         </ul>
