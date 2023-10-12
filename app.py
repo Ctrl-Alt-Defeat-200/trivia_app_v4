@@ -270,7 +270,7 @@ def create_trivia_set():
         db.session.commit()
 
         # Process and save questions and options
-        for question_num in range(1, 11):
+        for question_num in range(1, 6):
             question_text = request.form.get(f'question_{question_num}')
             options = request.form.getlist(f'question_{question_num}_options[]')
             correct_option = int(request.form.get(f'correct_option_{question_num}')) # type:ignore
@@ -475,23 +475,22 @@ def delete_trivia_set(trivia_set_id):
 
 
 # Route to display results after the user submits their answers
-@app.route('/results/<int:set_id>')
-def results(set_id):
+@app.route('/results/<int:set_id>/<int:score>')
+def results(set_id, score):
     trivia_set = TriviaSet.query.get(set_id)
-    # Fetch the user's score for the specified trivia set from the database
-    # You can query the UserScore table based on the set_id and the current user's ID
-    # Assuming you have the necessary imports and database setup
-    user_score = UserScore.query.filter_by(trivia_set_id=set_id, user_id=current_user.id).first() # type: ignore
-
-    return render_template('results.html', trivia_set=trivia_set, user_score=user_score)
+    try:
+        user_score = UserScore.query.filter_by(trivia_set_id=set_id, user_id=current_user.id).first() # type: ignore
+    except:
+        user_score=score
+    return render_template('results.html', trivia_set=trivia_set, user_score=user_score, guest_score=score)
 
 @app.route('/play_set/<int:set_id>', methods=['GET', 'POST'])
 @login_required
 def play_set(set_id):
     trivia_set = TriviaSet.query.get(set_id)
     if not trivia_set:
-        flash('Trivia set not found', 'danger')
-        return redirect(url_for('dashboard'))  # Redirect to a dashboard page or another route
+        # flash('Trivia set not found', 'danger')
+        return redirect(url_for('dashboard'))
 
     if request.method == 'POST':
         score = 0
@@ -506,17 +505,39 @@ def play_set(set_id):
         user_score = UserScore(user_id=current_user.id, trivia_set_id=set_id, score=score) # type: ignore
         db.session.add(user_score)
         db.session.commit()
-        flash(f'Your score: {score}', 'success')
-        return redirect(url_for('results', set_id=set_id))  # Redirect to a dashboard page or another route
+        # flash(f'Your score: {score}', 'success')
+        return redirect(url_for('results', set_id=set_id, score=score))  # Redirect to a dashboard page or another route
 
     questions = trivia_set.questions.all()
     return render_template('play_set.html', trivia_set=trivia_set, questions=questions)
+
+@app.route('/guest_play_set/<int:set_id>', methods=['GET', 'POST'])
+def guest_play_set(set_id):
+    trivia_set = TriviaSet.query.get(set_id)
+    if not trivia_set:
+        # flash('Trivia set not found', 'danger')
+        return redirect(url_for('dashboard'))
+
+    if request.method == 'POST':
+        score = 0
+        for question_id, selected_option_id in request.form.items():
+            question = Question.query.get(question_id)
+            selected_option = Option.query.get(selected_option_id)
+
+            if question and selected_option:
+                if selected_option.is_correct:
+                    score += 1
+
+        # flash(f'Your score: {score}', 'success')
+        return redirect(url_for('results', set_id=set_id, score=score))  # Redirect to a dashboard page or another route
+
+    questions = trivia_set.questions.all()
+    return render_template('guest_play_set.html', trivia_set=trivia_set, questions=questions)
 
 
 @app.route('/search', methods=['GET', 'POST'])
 def search():
     if request.method == 'POST':
-        # Get the search term from the form
         search_term = request.form.get('search_term', '')
 
         # Query trivia sets matching the search term in 'set_title' or 'category'
