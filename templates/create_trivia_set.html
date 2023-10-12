@@ -1,4 +1,56 @@
 <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Trivia Set</title>
+</head>
+<body>
+    <h1>Create Trivia Set</h1>
+    <form method="POST" action="{{ url_for('create_trivia_set') }}">
+        <label for="set_title">Set Title:</label>
+        <input type="text" id="set_title" name="set_title" required><br>
+
+        <label for="category">Category:</label>
+        <input type="text" id="category" name="category" required><br /><br />
+
+        <label for="difficulty">Difficulty:</label>
+        <select id="difficulty" name="difficulty" required>
+            <option value="easy">Easy</option>
+            <option value="medium">Medium</option>
+            <option value="hard">Hard</option>
+        </select><br>
+
+        <h2>Questions</h2>
+        <ol>
+            {% for question_num in range(1, 11) %}
+            <li>
+                <label for="question_{{ question_num }}">Question {{ question_num }}:</label>
+                <input type="text" id="question_{{ question_num }}" name="question_{{ question_num }}" required>
+                
+                <ul>
+                    {% for option_num in range(1, 5) %}
+                    <li>
+                        <label for="question_{{ question_num }}_option_{{ option_num }}">
+                            Option {{ option_num }}:
+                            <input type="text" id="question_{{ question_num }}_option_{{ option_num }}" name="question_{{ question_num }}_options[]" required>
+                            <input type="radio" id="correct_option_{{ question_num }}_{{ option_num }}" name="correct_option_{{ question_num }}" value="{{ option_num }}">
+                            <label for="correct_option_{{ question_num }}_{{ option_num }}">Correct</label>
+                        </label>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </li>
+            {% endfor %}
+        </ol>
+
+        <input type="submit" value="Create Trivia Set">
+    </form>
+</body>
+</html>
+
+
+<!-- <!DOCTYPE html>
 <html>
   <head>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -110,4 +162,4 @@
 
 
   </body>
-</html>
+</html> -->

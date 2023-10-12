@@ -199,7 +199,7 @@ def dashboard():
     if isinstance(current_user, UserMixin) and current_user.is_authenticated:
         # Query the user's trivia sets from the database
         user_trivia_sets = TriviaSet.query.filter_by(user_id=current_user.id).all() # type: ignore
-        user_top_scores = get_top_scores(current_user.id)
+        user_top_scores = get_top_scores(current_user.id) # type: ignore
         #print(user_top_scores)
         return render_template("dashboard.html", current_user=current_user, user_trivia_sets=user_trivia_sets, user_top_scores=user_top_scores)
     else:
@@ -471,7 +471,7 @@ def results(set_id):
     # Fetch the user's score for the specified trivia set from the database
     # You can query the UserScore table based on the set_id and the current user's ID
     # Assuming you have the necessary imports and database setup
-    user_score = UserScore.query.filter_by(trivia_set_id=set_id, user_id=current_user.id).first()
+    user_score = UserScore.query.filter_by(trivia_set_id=set_id, user_id=current_user.id).first() # type: ignore
 
     return render_template('results.html', trivia_set=trivia_set, user_score=user_score)
 
@@ -493,7 +493,7 @@ def play_set(set_id):
                 if selected_option.is_correct:
                     score += 1
 
-        user_score = UserScore(user_id=current_user.id, trivia_set_id=set_id, score=score)
+        user_score = UserScore(user_id=current_user.id, trivia_set_id=set_id, score=score) # type: ignore
         db.session.add(user_score)
         db.session.commit()
         flash(f'Your score: {score}', 'success')
