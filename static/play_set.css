@@ -40,7 +40,8 @@ form {
 }
 
 label {
-    color: #f2f2f2;
+    color: #32165B;
+    font-size: 1.5em;
     display: block;
     margin: 5px 0;
     font-variant: small-caps;
@@ -65,9 +66,8 @@ h1 {
     text-shadow: 0px 0px 3px #76e3eb, 0 0 5px #f2f2f2;
 }
 
-h2 {
-    color: rgb(247, 231, 246);
-    margin-bottom: 40px;
+h3 {
+    padding-top: 20px;
     font-style: normal;
     font-size: 30px;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
@@ -114,15 +114,46 @@ ul > li {
     width: 100%;
 }
 
-#difficulty {
-    width: 75%;
-    height: 30px;
-    border-radius: 12px;
-    text-align: center;
+input[type="select"]{
     cursor: url('pointer.png') 16 16, auto;
 }
 
+button {
+    margin: 40px;
+    width: 200px;
+    height: 80px;
+    border-radius: 12px;
+    font-size: 1.5em;
+    font-weight: bold;
+    font-style: normal;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-variant: small-caps;
+    background-color: #fbd788;
+    box-shadow: #f2f2f2;
+    color: darkblue
+}
 
-input[type="select"]{
+.question_wrapper {
+    width: 80%;
+    height: 200px;
+    margin: auto;
+    border-radius: 12px;
     cursor: url('pointer.png') 16 16, auto;
+    background-color: #dce3ece2;
+}
+
+.answer_wrapper {
+    display: flex;
+    flex-direction: row;
+    width: 80%;
+    flex-wrap: wrap;
+    margin: auto;
+    padding-top: 1em;
+    justify-content:space-evenly;
+}
+
+.btn.btn-primary:hover {
+    color: darkblue;
+    text-shadow: 3px 3px 3px aqua;
+    box-shadow: 10px 10px white, -1em 0 .9em fuchsia;
 }

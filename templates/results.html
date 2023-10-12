@@ -1,15 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='results.css') }}">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Trivia Set Results</title>
 </head>
 <body>
     <h1>Trivia Set Results - {{ trivia_set.set_title }}</h1>
-
+    {% if current_user.is_authenticated %}
+    
     <p>Your Score: {{ user_score.score }}</p>
-
     <a href="{{ url_for('dashboard') }}">Back to Dashboard</a>
+    {% else %}
+    <p>Your Score: {{ guest_score }}</p>
+    <a href="{{ url_for('search') }}">Back to Search</a>
+    {% endif %}
+
 </body>
 </html>

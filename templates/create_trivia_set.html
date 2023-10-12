@@ -1,3 +1,4 @@
+<!-- this is the create trivia set template without JavaScript -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -23,7 +24,7 @@
 
         <h2>Questions</h2>
         <ol>
-            {% for question_num in range(1, 11) %}
+            {% for question_num in range(1, 6) %}
             <li>
                 <label for="question_{{ question_num }}">Question {{ question_num }}:</label>
                 <input type="text" id="question_{{ question_num }}" name="question_{{ question_num }}" required>
