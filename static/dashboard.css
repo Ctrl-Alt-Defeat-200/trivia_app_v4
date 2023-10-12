@@ -15,12 +15,14 @@ body {
 
 h1{
     color: rgb(247, 231, 246);
+    margin-bottom: 100px;
     margin-bottom: 10px;
     font-style:normal;
     font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     font-variant:small-caps ;
     text-shadow: 0px 0px 3px #76e3eb,0 0 5px #f2f2f2; 
     animation: fadeIn 1s ease-in ;
+    font-size: 3em;
 }
 
 @keyframes fadeIn {
@@ -40,6 +42,7 @@ h2{
     font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     font-variant:small-caps ;
     text-shadow: 0px 0px 3px #76a9eb,0 0 5px #b573cd ;
+    text-align: center;
 }
 
 
@@ -76,7 +79,25 @@ ul{
     font-size: 18px ;
     font-family: 'Autour One', cursive;
     text-shadow: 0px 0px 3px #76a9eb,0 0 5px #b573cd ;
+    list-style-type: none;
+}
 
+li {
+    width: 100%;
+}
+
+form {
+    display: inline;
+}
+
+p {
+    color: rgb(3, 3, 44);
+    font-weight: bold;
+    font-size: 2em;
+    font-size: 19px ;
+    font-family: 'Autour One', cursive;
+    text-shadow: 0px 0px 3px #76a9eb,0 0 5px #b573cd ;
+    text-align: center;
 }
 
 .edit-button {
@@ -130,11 +151,40 @@ ul{
     box-shadow: 0 0 10px #edd2f0f1;
     color: #fff;
     font-family: Arial, Helvetica, sans-serif;
-    font-size: 16px;
+    font-size: 20px;
     font-weight: bolder;
+    height: 2em;
+    text-align: center;
+    vertical-align: middle;
+    line-height: 2em;
 }
   
 .button-link:hover {
-    color: #9df0dd; 
+    color: #66e0ab; 
 }
   
+
+.dashboard_container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 70%
+}
+
+.trivia_sets_wrapper {
+    display: flex;
+    flex-direction: column;
+    background-color: #dce3ece2;
+    border-radius: 12px;
+    width: 55%;
+    margin-right: 40px;
+}
+
+.top_scores_wrapper {
+    display: flex;
+    flex-direction: column;
+    background-color: #dce3ece2;
+    border-radius: 12px;
+    width: 55%;
+    margin-left: 40px;
+}
