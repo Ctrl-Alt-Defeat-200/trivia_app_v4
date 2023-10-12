@@ -112,7 +112,7 @@ Our team embraced an Agile Scrum methodology to efficiently manage the developme
 > **Conceptualization Phase**: 
 > Initial brainstorming sessions to define the project scope and objectives.
 > Creation of a concept map to visualize overall structure of the application
-> ![First Concept Map](ConceptMap.jpg)
+> ![First Concept Map](ConceptMap.jpg)  
 > 
 
 **Sprint Planning**:
