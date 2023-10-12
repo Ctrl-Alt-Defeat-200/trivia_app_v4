@@ -8,9 +8,22 @@ body {
     padding: 0;
     background-image: url(purpleplanet.png);
     background-repeat: no-repeat;
-    background-attachment: fixed;
+    background-attachment:fixed;
     background-size: cover;
+    animation: fadeInAnimation ease 1s;
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
     cursor: url('pointer.png') 16 16, auto;
+
+}
+
+@keyframes fadeInAnimation {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+     }
 }
 
 h1{
@@ -23,27 +36,7 @@ h1{
     animation: fadeIn 1s ease-in ;
 }
 
-@keyframes fadeIn {
-    from {
-        opacity: 0; /* Start with 0 opacity (completely transparent) */
-        }
-    to {
-        opacity: 1; /* End with 1 opacity (fully visible) */
-        }
-    }
-
-h2{
-    color: rgb(127, 43, 121);
-    margin-bottom: 40px;
-    font-style:normal;
-    font-size: 30px;
-    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-    font-variant:small-caps ;
-    text-shadow: 0px 0px 3px #76a9eb,0 0 5px #b573cd ;
-}
-
-
-button{
+form{
     margin:20px auto;
     padding: 20px;
     background-color: #fffefeea ;
@@ -65,59 +58,44 @@ button{
      }
 }
 
-
-.trivia-list {
-    list-style-type:square;
-    padding: 0;
-    
-}
-
-ul{
-    font-size: 18px ;
+label{
     font-family: 'Autour One', cursive;
-    text-shadow: 0px 0px 3px #76a9eb,0 0 5px #b573cd ;
-
+    /*display:block;*/
+    margin-bottom: 5px;
 }
 
-.edit-button {
-    background-image: linear-gradient( to left, rgb(150, 100, 170), rgb(17, 135, 232));
+
+input [type="text"]{
+    width: 50%;
+    margin-bottom: 20px auto;
+    border: 1px solid #ccc;
+    padding: 10px;
+    font-size: 15px;
+}
+
+.action-button {
+    background-image: linear-gradient( to right, rgb(150, 100, 170), rgb(17, 135, 232));
     color: #fff; 
-    border: 2px solid transparent; 
+    border: none; 
     padding: 10px 20px; 
     border-radius: 5px; 
     cursor: pointer; 
-    text-decoration: none; 
-    display: inline-block; 
-    margin-right: 10px; 
-    font-size: 16px;
+    margin-right: 10px;
     font-family: Arial, Helvetica, sans-serif;
-    font-weight: bold;
+    font-size: 16px; 
 }
 
-.delete-button {
-    background-image: linear-gradient( to left, rgb(150, 100, 170), rgb(17, 135, 232));
-    color: #fff; 
-    border: 2px solid transparent; 
-    padding: 10px 20px; 
+.add-option-button {
+    background-image: linear-gradient( to right, rgb(150, 100, 170), rgb(17, 135, 232));
+    color: #fff;
+    border: none; 
+    margin-bottom: 15px;
+    padding: 10px 10px; 
     border-radius: 5px; 
-    cursor: pointer; 
-    text-decoration: none;
-    text-shadow: 0px 0px 3px #ffffff,0 0 5px #3a383b;
-    display: inline-block; 
-    margin-right: 10px; 
-    font-size: 16px;
+    cursor: pointer;
     font-family: Arial, Helvetica, sans-serif;
-    font-weight: bold;
+    font-size: 16px; 
 }
-
-.edit-button:hover{
-    color: #04ffff;
-}
-
-.delete-button:hover{
-    color:#ff0404
-}
-
 
 .button-link {
     display: inline-block; 
@@ -135,6 +113,7 @@ ul{
 }
   
 .button-link:hover {
-    color: #9df0dd; 
+    color: #a0f1ff;
 }
+
   
