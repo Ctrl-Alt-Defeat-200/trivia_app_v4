@@ -27,12 +27,12 @@ body {
 
 form {
     width: 50%;
-    
 }
 
 .searchResults{
     display: flex;
     flex-direction: column;
+    justify-content: center;
     align-items: center;
     border-radius: 12px;
     width: 50%;
@@ -45,6 +45,7 @@ form {
 
 .searchResults form{
     width: 100%;
+    margin: auto;
 }
 
 .container {
@@ -61,14 +62,14 @@ h1{
         text-shadow: 0px 0px 3px #76a9eb,0 0 5px #b573cd ;
 }
 
-    h2{
-        color: rgb(127, 43, 121);
-        margin-bottom: 10px;
-        font-style:normal;
-        font-size: 30px;
-        font-variant:small-caps ;
-        text-shadow: 0px 0px 3px #76a9eb,0 0 5px #b573cd ;
-    }
+h2{
+    color: rgb(127, 43, 121);
+    margin-bottom: 10px;
+    font-style:normal;
+    font-size: 30px;
+    font-variant:small-caps ;
+    text-shadow: 0px 0px 3px #76a9eb,0 0 5px #b573cd ;
+}
 
 input {
     height: 40px;
@@ -90,6 +91,7 @@ input[type="submit"] {
     box-shadow: 0 0 10px rgb(154, 150, 150);
     font-variant: small-caps;
     cursor: url('pointer.png') 16 16, auto;
+    margin-left: 20px;
 }
 
 input[type="submit"]:hover{
@@ -100,17 +102,40 @@ input[type="submit"]:hover{
 
 ul{
     list-style: none;
+    width: 60%
 }
 
 p {
     padding-top: 15px;
+    font-size: 1.3em;
+    font-weight: bold;
+    text-shadow: 3px 3px 6px #76e3eb, 0 0 10px #f2f2f2;
 }
 
 .btn{
     width: 100%;
+    margin: auto;
+    
 }
 
 input[type=text] {
     font-variant: small-caps;
     font-size: large;
   }
+
+
+li {
+    font-size: 1.5em;
+    margin: auto;
+}
+
+.search_result_wrapper {
+    width: 100%;
+    border-radius: 12px;
+    background-color: #a7d9f0e2;
+    height: 150px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 2px solid navy;
+}

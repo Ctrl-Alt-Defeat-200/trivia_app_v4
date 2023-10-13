@@ -18,6 +18,7 @@
         <p>Search term: {{ search_term }}</p>
         <ul>
           {% for trivia_set in trivia_sets %}
+          <div class="search_result_wrapper">
           <li>
             <strong>Set Title:</strong> {{ trivia_set.set_title }}<br />
             <strong>Category:</strong> {{ trivia_set.category }}<br />
@@ -33,6 +34,7 @@
             {% endif %}
             
           </li>
+        </div>
           {% endfor %}
         </ul>
 
