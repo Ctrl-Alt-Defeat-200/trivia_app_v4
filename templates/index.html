@@ -14,7 +14,7 @@
 		<ul>
 			<p class="in">Returning user?: <a href="{{url_for('login')}}" class="login-button">Login</a></p>
 			<p class="in"> New user?: <a href="{{url_for('register')}}" class="create-button">Create account</a></p>
-			<li><a href="{{url_for('search')}}">*Play As A Guest*</a></li>
+			<li><a href="{{url_for('search')}}" class="button-link">Play As A Guest</a></li>
 		</ul>
 	</nav>
 	{% if current_user.is_authenticated %}
