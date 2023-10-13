@@ -12,17 +12,18 @@ body {
     background-size: cover;
     cursor: url('pointer.png') 16 16, auto;
     font-family: 'Autour One', cursive;
-    
-    
+    color: black
 }
 
 h1{
     color: rgb(247, 231, 246);
     margin-bottom: 100px;
+    margin-top: 100px;
     font-style:normal;
     font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     font-variant:small-caps ;
     text-shadow: 0px 0px 3px #76e3eb,0 0 5px #f2f2f2; 
+    font-size: 3em;
 }
 
 
@@ -50,12 +51,13 @@ button{
     margin: 20px auto;
 }
 
-
+/*
 .trivia-list {
     list-style-type:square;
     padding: 0;
     
 }
+*/
 
 ul{
     font-size: 18px ;
@@ -66,20 +68,48 @@ ul{
 
 li {
     width: 100%;
+    color: black;
 }
+
+/*
+ul li{
+    display: flex;
+    align-items: center;
+    margin: 10px;
+    margin-left: 20px;
+    list-style-type: decimal;
+}
+*/
 
 form {
     display: inline;
 }
 
 p {
-    color: rgb(3, 3, 44);
+    color: black;
     font-weight: bold;
     font-size: 2em;
     font-size: 19px ;
     font-family: 'Autour One', cursive;
     text-shadow: 0px 0px 3px #76a9eb,0 0 5px #b573cd ;
     text-align: center;
+    margin-top: 0px;
+}
+
+.play-button {
+    background-image: linear-gradient( to left, rgb(150, 100, 170), rgb(17, 135, 232));
+    color: #fff; 
+    border: 2px solid transparent; 
+    padding: 10px 20px; 
+    border-radius: 5px; 
+    cursor: pointer; 
+    text-decoration: none; 
+    display: inline-block; 
+    margin-right: 10px;
+    margin-left: 40px;
+    font-size: 16px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
 }
 
 .edit-button {
@@ -92,7 +122,7 @@ p {
     text-decoration: none; 
     display: inline-block; 
     margin-right: 10px;
-    margin-left: 20px;
+    margin-left: 10px;
     font-size: 16px;
     font-family: Arial, Helvetica, sans-serif;
     font-weight: bold;
@@ -112,6 +142,7 @@ p {
     font-size: 16px;
     font-family: Arial, Helvetica, sans-serif;
     font-weight: bold;
+    margin-left: 10px;
 }
 
 .edit-button:hover{
@@ -145,54 +176,40 @@ p {
     color: #01c698; 
 }
 
-p{
-    margin-top: 0px;
-    
-}
-
-.dashboard-form {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #ffffffaa;
-    text-align: center;
-    border-radius: 10px;
-    margin: 20px auto;
-    box-shadow: 0 0 10px rgb(150, 152, 154); 
-}
-
-ul li{
-    display: flex;
-    align-items: center;
-    margin: 10px;
-    margin-left: 20px;
-    list-style-type: decimal;
-}
- 
-
-  
-
 .dashboard_container {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    width: 70%
+    width: 80%;
+    margin-top: 70px;
 }
 
 .trivia_sets_wrapper {
     display: flex;
     flex-direction: column;
-    background-color: #dce3ece2;
+    background-color: #ffffffaa;
     border-radius: 12px;
-    width: 55%;
-    margin-right: 40px;
+    width: 65%;
+    margin-right: 50px;
+    box-shadow: 0 0 10px rgb(150, 152, 154);
 }
 
 .top_scores_wrapper {
     display: flex;
     flex-direction: column;
-    background-color: #dce3ece2;
+    background-color: #ffffffaa;
     border-radius: 12px;
-    width: 55%;
-    margin-left: 40px;
+    width: 65%;
+    margin-left: 50px;
+    box-shadow: 0 0 10px rgb(150, 152, 154);
+}
+
+
+.nav_wrapper {
+    background-color: transparent;
+    margin-top: 20px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    width: 90%;
 }

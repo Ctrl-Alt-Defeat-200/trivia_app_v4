@@ -11,10 +11,16 @@
     {% if current_user.is_authenticated %}
     
     <p>Your Score: {{ user_score.score }}</p>
-    <a href="{{ url_for('dashboard') }}">Back to Dashboard</a>
+    <div class="buttons_wrapper">
+        <a href="{{url_for('play_set', set_id=trivia_set.id)}}" class="button-link">Play Again</a>
+        <a href="{{ url_for('dashboard') }}" class="button-link">Back to Dashboard</a>
+    </div>
     {% else %}
     <p>Your Score: {{ guest_score }}</p>
-    <a href="{{ url_for('search') }}">Back to Search</a>
+    <div class="buttons_wrapper">
+        <a href="{{ url_for('search') }}" class="button-link">Back to Search</a>
+        <a href="{{ url_for('index') }}" class="button-link">Back to Homepage</a>
+    </div>
     {% endif %}
 
 </body>
