@@ -1,0 +1,195 @@
+* {
+    cursor: url('pointer.png') 16 16, auto;
+}
+
+.nav_wrapper {
+    background-color: transparent;
+    margin-top: 10px;
+    display: flex;
+    justify-content:flex-start;
+    align-items: flex-start;
+    width: 100%
+}
+
+body {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    display: flex; /* Add this property to center the content vertically and horizontally */
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-image: url(purpleplanet.png);
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+    cursor: url('pointer.png') 16 16, auto;
+}
+
+.main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 75%;
+    text-align: center;
+    font-style: normal;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-variant: small-caps;
+    background-color:rgba(127, 43, 121, 0.2);
+    margin-top: 40px;
+}
+
+form {
+    display: flex;
+    flex-direction: column; /* Change flex direction to column */
+    align-items: center;
+    width: 75%;
+    cursor: url('pointer.png') 16 16, auto;
+    font-variant: small-caps;
+    font-size: large;
+}
+
+label {
+    color: #32165B;
+    font-size: 1.5em;
+    display: block;
+    margin: 5px 0;
+    font-variant: small-caps;
+    cursor: url('pointer.png') 16 16, auto;
+}
+
+input {
+    width: 100%;
+    height: 30px;
+    border-radius: 12px;
+    font-variant: small-caps;
+    cursor: url('pointer.png') 16 16, auto;
+}
+
+
+h1 {
+    color: rgb(247, 231, 246);
+    margin-bottom: 20px;
+    font-style: normal;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-variant: small-caps;
+    text-shadow: 0px 0px 3px #76e3eb, 0 0 5px #f2f2f2;
+}
+
+h3 {
+    padding-top: 20px;
+    font-style: normal;
+    font-size: 30px;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-variant: small-caps;
+    text-shadow: 0px 0px 3px #76e3eb, 0 0 5px #f2f2f2;
+}
+
+
+.options label {
+    display: flex;
+    flex-wrap: row wrap;
+}
+
+input[type="submit"]:hover{
+    color: aqua;
+    font-variant: small-caps;
+    cursor: url('pointer.png') 16 16, auto;
+}
+
+input[type="submit"] {
+    align-self: center;
+    height: 40px;
+    width: 75%;
+    padding: 10px;
+    background-image: linear-gradient(to right, rgb(150, 100, 170), rgb(17, 135, 232));
+    color: rgb(255, 255, 255);
+    font-size: 15px;
+    border: none;
+    border-radius: 3px;
+    cursor: url('pointer.png') 16 16, auto;
+    font-variant: small-caps;
+    text-shadow: 1px 1px 1px #898c90e2;
+    box-shadow: 0 0 10px rgb(154, 150, 150);
+    padding: 15px;
+    margin: 0 0 0 20px;
+}
+
+ol, ul {
+    list-style: none;
+    width: 100%;
+}
+
+ul > li {
+    width: 100%;
+}
+
+input[type="select"]{
+    cursor: url('pointer.png') 16 16, auto;
+}
+
+button {
+    margin: 40px;
+    width: 200px;
+    height: 80px;
+    border-radius: 12px;
+    font-size: 1.5em;
+    font-weight: bold;
+    font-style: normal;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-variant: small-caps;
+    background-color: #fbd788;
+    box-shadow: #f2f2f2;
+    color: darkblue
+}
+
+.question_wrapper {
+    width: 80%;
+    height: 200px;
+    margin: auto;
+    border-radius: 12px;
+    cursor: url('pointer.png') 16 16, auto;
+    background-color: #dce3ece2;
+}
+
+.answer_wrapper {
+    display: flex;
+    flex-direction: row;
+    width: 80%;
+    flex-wrap: wrap;
+    margin: auto;
+    padding-top: 1em;
+    justify-content:space-evenly;
+}
+
+.btn.btn-primary:hover {
+    color: darkblue;
+    text-shadow: 3px 3px 3px aqua;
+    box-shadow: 10px 10px white, -1em 0 .9em fuchsia;
+}
+
+.button-link {
+    display: inline-block; 
+    padding: 5px 10px; 
+    background-image: linear-gradient( to right, rgb(150, 100, 170), rgb(17, 135, 232));
+    color: #fff; 
+    text-decoration: none; 
+    border-radius: 5px; 
+    cursor: pointer; 
+    box-shadow: 0 0 10px #edd2f0f1;
+    color: #fff;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 16px;
+    font-weight: bolder;
+    height: 2em;
+    text-align: center;
+    vertical-align: middle;
+    line-height: 2em;
+    margin-left: 40px;
+    margin-top: 20px;
+}
+  
+.button-link:hover {
+    color: #66e0ab; 
+}

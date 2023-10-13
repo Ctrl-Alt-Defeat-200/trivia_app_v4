@@ -1,23 +1,48 @@
-{% block content %}
-  <h1>{{ trivia_set.set_title }} - Trivia Questions</h1>
-  <form method="POST">
-    <ul>
-      {% for question in questions %}
-        <li>
-          <h3>{{ question.question_text }}</h3>
-          <ul>
-            {% for option in question.options %}
-              <li>
-                <label>
-                  <input type="radio" name="{{ question.id }}" value="{{ option.id }}">
-                  {{ option.text }}
-                </label>
-              </li>
-            {% endfor %}
-          </ul>
-        </li>
-      {% endfor %}
-    </ul>
-    <button type="submit" class="btn btn-primary">Submit Answers</button>
-  </form>
-{% endblock %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Play Trivia Set - Guest</title>
+    <link rel="stylesheet" href="/static/guest_play_set.css" />
+  </head>
+  
+  <body>
+    <div class="nav_wrapper">
+      <a href="{{ url_for('search') }} " class="button-link">Search for a Trivia Set</a>
+    </div>
+    <div class="main">
+      {% block content %}
+      <h1>{{ trivia_set.set_title }} - Trivia Questions</h1>
+      <form method="POST">
+        <ul>
+          {% for question in questions %}
+          <div class="question_wrapper">
+            <li>
+              <h3>{{ question.question_text }}</h3>
+              <ul class="answer_wrapper">
+                {% for option in question.options %}
+                <div>
+                  <li>
+                    <label>
+                      <input
+                        type="radio"
+                        name="{{ question.id }}"
+                        value="{{ option.id }}"
+                      />
+                      {{ option.text }}
+                    </label>
+                  </li>
+                </div>
+                {% endfor %}
+              </ul>
+            </li>
+          </div>
+          {% endfor %}
+        </ul>
+        <button type="submit" class="btn btn-primary">Submit Answers</button>
+      </form>
+      {% endblock %}
+    </div>
+  </body>
+</html>
