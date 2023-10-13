@@ -37,6 +37,7 @@ body {
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     font-variant: small-caps;
     background-color:rgba(127, 43, 121, 0.2);
+    margin-top: 40px;
 }
 
 form {
