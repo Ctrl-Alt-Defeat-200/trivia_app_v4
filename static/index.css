@@ -26,7 +26,6 @@ form{
     margin:0 auto;
     padding: 5px;
     background-color: #fffefe00 ;
-    
     text-align: center;
     border-radius: 5px; 
     margin: 20px auto;
@@ -66,7 +65,7 @@ form{
     text-shadow: 1px 1px 1px #898c90e2;
     box-shadow: 0 0 10px rgb(154, 150, 150);
     text-decoration:none;
-    margin-top: 7px;
+    margin-top: 3px;
 }
 
 a:hover{
@@ -125,6 +124,25 @@ h2{
 
 }
 
+li{
+    font-size: 20px;
+    list-style-type: none;
+    margin-right: 20px;
+    
+}
+
+li a{
+    color:#76e3eb;
+    font-style:normal;
+    text-decoration:none;
+    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-size: 20px;
+    font-style: italic;
+    padding: 10px 20px;
+    
+    
+
+}
 
 
 

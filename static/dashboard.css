@@ -2,8 +2,8 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center; 
-    height: 100vh; 
+    justify-content: center;
+    height: 15z0vh;
     margin: 0;
     padding: 0;
     background-image: url(purpleplanet.png);
@@ -11,6 +11,9 @@ body {
     background-attachment: fixed;
     background-size: cover;
     cursor: url('pointer.png') 16 16, auto;
+    font-family: 'Autour One', cursive;
+    
+    
 }
 
 h1{
@@ -20,21 +23,12 @@ h1{
     font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     font-variant:small-caps ;
     text-shadow: 0px 0px 3px #76e3eb,0 0 5px #f2f2f2; 
-    animation: fadeIn 1s ease-in ;
-    font-size: 3em;
 }
 
-@keyframes fadeIn {
-    from {
-        opacity: 0; /* Start with 0 opacity (completely transparent) */
-        }
-    to {
-        opacity: 1; /* End with 1 opacity (fully visible) */
-        }
-    }
+
 
 h2{
-    color: rgb(127, 43, 121);
+    color: #7f2b79;
     margin-bottom: 10px;
     font-style:normal;
     font-size: 30px;
@@ -54,17 +48,6 @@ button{
     backdrop-filter: blur;
     border-radius: 10px; 
     margin: 20px auto;
-    animation: fadeInAnimation ease-in 1s;
-    animation-fill-mode:forwards;
-}
-
-@keyframes fadeInAnimation {
-    0% {
-        opacity: 0;
-    }
-    100% {
-        opacity: 1;
-     }
 }
 
 
@@ -108,7 +91,8 @@ p {
     cursor: pointer; 
     text-decoration: none; 
     display: inline-block; 
-    margin-right: 10px; 
+    margin-right: 10px;
+    margin-left: 20px;
     font-size: 16px;
     font-family: Arial, Helvetica, sans-serif;
     font-weight: bold;
@@ -124,7 +108,7 @@ p {
     text-decoration: none;
     text-shadow: 0px 0px 3px #ffffff,0 0 5px #3a383b;
     display: inline-block; 
-    margin-right: 10px; 
+    margin-right: 5px; 
     font-size: 16px;
     font-family: Arial, Helvetica, sans-serif;
     font-weight: bold;
@@ -142,13 +126,12 @@ p {
 .button-link {
     display: inline-block; 
     padding: 10px 20px; 
-    background-image: linear-gradient( to right, rgb(150, 100, 170), rgb(17, 135, 232));
+    background-image: linear-gradient( to right, #9664aa, rgb(17, 135, 232));
     color: #fff; 
     text-decoration: none; 
     border-radius: 5px; 
     cursor: pointer; 
     box-shadow: 0 0 10px #edd2f0f1;
-    color: #fff;
     font-family: Arial, Helvetica, sans-serif;
     font-size: 20px;
     font-weight: bolder;
@@ -159,8 +142,34 @@ p {
 }
   
 .button-link:hover {
-    color: #66e0ab; 
+    color: #01c698; 
 }
+
+p{
+    margin-top: 0px;
+    
+}
+
+.dashboard-form {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #ffffffaa;
+    text-align: center;
+    border-radius: 10px;
+    margin: 20px auto;
+    box-shadow: 0 0 10px rgb(150, 152, 154); 
+}
+
+ul li{
+    display: flex;
+    align-items: center;
+    margin: 10px;
+    margin-left: 20px;
+    list-style-type: decimal;
+}
+ 
+
   
 
 .dashboard_container {

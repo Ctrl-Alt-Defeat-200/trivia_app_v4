@@ -2,6 +2,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='trivia_set.css') }}">
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Create Trivia Set</title>
@@ -26,13 +28,13 @@
         <ol>
             {% for question_num in range(1, 6) %}
             <li>
-                <label for="question_{{ question_num }}">Question {{ question_num }}:</label>
-                <input type="text" id="question_{{ question_num }}" name="question_{{ question_num }}" required>
+                <label for="question_{{ question_num }}" class="question">Question {{ question_num }}:</label>
+                <input type="text" id="question_{{ question_num }}" name="question_{{ question_num }}" class="questlabel" required>
                 
                 <ul>
                     {% for option_num in range(1, 5) %}
                     <li>
-                        <label for="question_{{ question_num }}_option_{{ option_num }}">
+                        <label for="question_{{ question_num }}_option_{{ option_num }}" >
                             Option {{ option_num }}:
                             <input type="text" id="question_{{ question_num }}_option_{{ option_num }}" name="question_{{ question_num }}_options[]" required>
                             <input type="radio" id="correct_option_{{ question_num }}_{{ option_num }}" name="correct_option_{{ question_num }}" value="{{ option_num }}">
