@@ -6,7 +6,10 @@
     <title>Play Trivia Set</title>
     <link rel="stylesheet" href="/static/play_set.css" />
   </head>
-
+  <nav>
+    <a href="{{ url_for('search') }} " class="button-link">Search for a Trivia Set</a>
+    <a href="{{ url_for('dashboard') }} " class="button-link">Back to Dashboard</a>
+  </nav>
   <body>
     <div class="main">
       {% block content %}

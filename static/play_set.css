@@ -2,6 +2,13 @@
     cursor: url('pointer.png') 16 16, auto;
 }
 
+nav {
+    background-color: transparent;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
 body {
     height: 100%;
     width: 100%;

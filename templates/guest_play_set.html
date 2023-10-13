@@ -6,8 +6,11 @@
     <title>Play Trivia Set - Guest</title>
     <link rel="stylesheet" href="/static/guest_play_set.css" />
   </head>
-
+  
   <body>
+    <div class="nav_wrapper">
+      <a href="{{ url_for('search') }} " class="button-link">Search for a Trivia Set</a>
+    </div>
     <div class="main">
       {% block content %}
       <h1>{{ trivia_set.set_title }} - Trivia Questions</h1>
