@@ -206,7 +206,7 @@ This project is licensed under the [MIT License.]()
 
 ## License
 
-Distrivuted under the MIT License. See LICENSE for more information. 
+Distributed under the MIT License. See LICENSE for more information. 
 
 ## Acknowledgments
 
